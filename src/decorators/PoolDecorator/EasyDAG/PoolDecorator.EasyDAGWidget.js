@@ -21,7 +21,7 @@ define([
     PoolDecorator = function (options) {
         this.dense = this.dense || {width: 100, height: 50};
         this.size = this.size || {width: 120, height: 150};
-        this.color = this.color || '#f44336';
+        this.color = this.color || '#2196f3';
 
         LayerDecorator.call(this, options);
 

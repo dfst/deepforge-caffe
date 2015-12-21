@@ -24,8 +24,23 @@ define([
         this._widget.createConnectedNode = this._createConnectedNode.bind(this);
         this._widget.removeSubtreeAt = this._removeSubtreeAt.bind(this);
 
+        // Decorator callbacks
         // Editing attributes
         this._widget.saveAttributeForNode = this._saveAttributeForNode.bind(this);
+        this._widget.setPointerForNode = this._setPointerForNode.bind(this);
+        this._widget.getChildrenOf = this._getChildrenOf.bind(this);
+    };
+
+    EasyDAGControlEventHandlers.prototype._setPointerForNode = function(nodeId, ptr, tgt) {
+        this._client.makePointer(nodeId, ptr, tgt);
+    };
+
+    EasyDAGControlEventHandlers.prototype._getChildrenOf = function(nodeId) {
+        var parent = this._client.getNode(nodeId || ''),
+            childrenIds;
+
+        // Get the children
+        return parent.getChildrenIds().map(this._getObjectDescriptor.bind(this));
     };
 
     EasyDAGControlEventHandlers.prototype._saveAttributeForNode = function(nodeId, attr, value) {

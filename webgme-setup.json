@@ -83,6 +83,9 @@
       },
       "ReLUDecorator": {
         "src": "src/decorators/ReLUDecorator"
+      },
+      "InputDecorator": {
+        "src": "src/decorators/InputDecorator"
       }
     },
     "addons": {}

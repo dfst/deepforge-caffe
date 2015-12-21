@@ -85,13 +85,25 @@ define([
             event.preventDefault();
             this.selectionManager.deselect();
         });
+        this.setupItemCallbacks();
 
-        // DAGItems
+        // Setup DAGItem callbacks
+        this.resizeDAG();
+    };
+
+    EasyDAGWidget.prototype.setupItemCallbacks = function () {
+        var self = this;
+
         DAGItem.prototype.onUpdate = this.refreshUI.bind(this);
         DAGItem.prototype.saveAttribute = function(attr, value) {
             self.saveAttributeForNode(this.id, attr, value);
         };
-        this.resizeDAG();
+        DAGItem.prototype.setPointer = function(ptr, nodeId) {
+            return self.setPointerForNode(this.id, ptr, nodeId);
+        };
+        DAGItem.prototype.getChildrenOf = function(nodeId) {
+            return self.getChildrenOf(nodeId);
+        };
     };
 
     EasyDAGWidget.prototype.resetGraph = function () {
