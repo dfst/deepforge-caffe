@@ -75,6 +75,9 @@
     "layouts": {
       "MinimalLayout": {
         "src": "src/layouts/MinimalLayout"
+      },
+      "CHFLayout": {
+        "src": "src/layouts/CHFLayout"
       }
     },
     "decorators": {
