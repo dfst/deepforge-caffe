@@ -34,9 +34,21 @@ define([
         this.height = this.decorator.height;
 
         // Set up decorator callbacks
+        this.setupDecoratorCallbacks();
+    };
+
+    DAGItem.prototype.setupDecoratorCallbacks = function() {
         this.decorator.onResize = this.updateDimensions.bind(this);
         this.decorator.saveAttribute = (attrId, value) => {
             this.saveAttribute(attrId, value);
+        };
+
+        this.decorator.setPointer = (ptr, nodeId) => {
+            this.setPointer(ptr, nodeId);
+        };
+
+        this.decorator.getChildrenOf = (nodeId) => {
+            return this.getChildrenOf(nodeId);
         };
     };
 

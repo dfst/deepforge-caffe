@@ -22,6 +22,7 @@ define([
     // Callback for triggering size change in parent
     EasyDAGDecoratorBase.prototype.onResize = nop;
     EasyDAGDecoratorBase.prototype.saveAttribute = nop;
+    EasyDAGDecoratorBase.prototype.setPointer = nop;
 
     EasyDAGDecoratorBase.prototype.onSelect = function() {
         this.onResize();
