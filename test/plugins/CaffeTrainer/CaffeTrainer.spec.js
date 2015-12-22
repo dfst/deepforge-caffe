@@ -6,13 +6,13 @@
 'use strict';
 var testFixture = require('../../globals');
 
-describe('CaffeExecutor', function () {
+describe('CaffeTrainer', function () {
     var gmeConfig = testFixture.getGmeConfig(),
         expect = testFixture.expect,
         logger = testFixture.logger.fork('NewPlugin'),
         PluginCliManager = testFixture.WebGME.PluginCliManager,
         projectName = 'testProject',
-        pluginName = 'CaffeExecutor',
+        pluginName = 'CaffeTrainer',
         project,
         gmeAuth,
         storage,

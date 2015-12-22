@@ -21,7 +21,7 @@ define([
     ConvDecorator = function (options) {
         this.dense = this.dense || {width: 125, height: 50};
         this.size = this.size || {width: 150, height: 150};
-        this.color = this.color || '#4fc3f7';
+        this.color = this.color || '#80deea';
 
         LayerDecorator.call(this, options);
 

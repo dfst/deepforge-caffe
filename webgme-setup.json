@@ -9,9 +9,9 @@
         "src": "src/plugins/CaffeGenerator",
         "test": "test/plugins/CaffeGenerator"
       },
-      "CaffeExecutor": {
-        "src": "src/plugins/CaffeExecutor",
-        "test": "test/plugins/CaffeExecutor"
+      "CaffeTrainer": {
+        "src": "src/plugins/CaffeTrainer",
+        "test": "test/plugins/CaffeTrainer"
       },
       "CaffeClassifier": {
         "src": "src/plugins/CaffeClassifier",
