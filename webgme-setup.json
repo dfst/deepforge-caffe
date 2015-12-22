@@ -12,6 +12,10 @@
       "CaffeExecutor": {
         "src": "src/plugins/CaffeExecutor",
         "test": "test/plugins/CaffeExecutor"
+      },
+      "CaffeClassifier": {
+        "src": "src/plugins/CaffeClassifier",
+        "test": "test/plugins/CaffeClassifier"
       }
     },
     "addOns": {},

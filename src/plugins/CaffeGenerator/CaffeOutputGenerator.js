@@ -37,6 +37,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
             archName = name+'_network.prototxt',
             trainName = name+'_trainer.prototxt',
             testName = name+'_solver.prototxt',
+            classifyName = name+'_classify.prototxt.ejs',
             template,
             labelName,
             node;
@@ -76,10 +77,15 @@ define(['TemplateCreator/outputs/OutputGenerator',
         template = _.template(this.template[TESTING]);
         outputFiles[testName] = template(tree);
 
+        // Create the classification prototxt template
+        outputFiles[classifyName] = this.createPrototxtTemplate(tree);
+
         // Create the metadata file
-        var metadata = {type: 'Caffe',
-                        trainCommand: 'caffe train --solver='+trainName,
-                        testCommand: ''};  // Add test cmd FIXME 
+        var metadata = {
+            type: 'Caffe',
+            trainCommand: 'caffe train --solver='+trainName,
+            testCommand: ''
+        };  // Add test cmd FIXME 
         outputFiles.metadata = JSON.stringify(metadata);
 
         return outputFiles;
@@ -176,6 +182,33 @@ define(['TemplateCreator/outputs/OutputGenerator',
                 return node.name === labelName;
             });
         }
+    };
+
+    CaffeGenerator.prototype.createPrototxtTemplate = function(tree) {
+        var template,
+            result,
+            data;
+
+        // Add the node name
+        template = _.template(this.template[Constants.ARCH]);
+        result = template(tree);
+
+        // Remove the data layer
+        data = tree[Constants.CHILDREN].shift();
+        result += `input: "${data.name}"`;
+        
+        // Add the input info
+        result += [
+            '\ninput_shape {',
+            '{{ _.each(dims, function(dim) { }}',
+            '  dim: {{= dim }}{{ }); }}',
+            '}\n'
+        ].join('\n');
+
+        // Add the rest of the layers
+        result += this.createTemplateFromNodes(tree[Constants.CHILDREN]);
+
+        return result;
     };
 
     return CaffeGenerator;

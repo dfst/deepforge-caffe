@@ -23,13 +23,14 @@ define([
     //  + snapshot
     //  + snapshot prefix
     var CONFIG_CONSTANTS = 
-    {
-        dataType: 'LMDB',
-        inputData: 'NONE',
-        display: 500,
-        snapshot: 10000000,  // No snapshots -> just the last result!
-        snapshotPrefix: 'snapshot_'
-    };
+        {
+            dataType: 'LMDB',
+            inputData: 'NONE',
+            display: 500,
+            snapshot: 10000000,  // No snapshots -> just the last result!
+            snapshotPrefix: 'snapshot_'
+        },
+        TEMPLATE_SUFFIX = 'classify.prototxt.ejs';
 
     /**
      * Initializes a new instance of CaffeExecutor.
@@ -90,14 +91,13 @@ define([
             config = this.getCurrentConfig();
 
         self.getDataNode(function(e, dataNode) {
-            var dataHash,
-                metadata;
+            var dataHash;
 
             if (e) {
                 return callback(e);
             }
             dataHash = self.core.getAttribute(dataNode, 'data');
-            metadata = self.blobClient.getMetadata(dataHash, function(err, metadata) {
+            self.blobClient.getMetadata(dataHash, function(err, metadata) {
                 if (err) {
                     return callback(err);
                 }
@@ -115,7 +115,6 @@ define([
         var self = this,
             artifact,
             executorConfig,
-            executorClient,
             metadata = JSON.parse(files.metadata),
             shellScript = 'train_net.sh';
 
@@ -155,7 +154,6 @@ define([
                 }
                 self.logger.info('added files');
                 artifact.save(function (err, hash) {
-                    var executorClient;
                     if (err) {
                         callback(err, self.result);
                         return;
@@ -163,7 +161,7 @@ define([
                     self.logger.info('artifact saved');
                     self.result.addArtifact(hash);
                     self.revert();  // Remove modified model from CaffeGenerator
-                    self.createTrainedNode(function(err) {
+                    self.createTrainedNode(files, function(err) {
                         if (err) {
                             return callback(err);
                         }
@@ -291,7 +289,7 @@ define([
         });
     };
 
-    CaffeExecutor.prototype.createTrainedNode = function(callback) {
+    CaffeExecutor.prototype.createTrainedNode = function(files, callback) {
         var self = this;
 
         self.getModelsDir(function(e, modelsDir) {
@@ -303,10 +301,37 @@ define([
                 parent: modelsDir,
                 base: self.META.Model
             });
+
             // Set an intelligent model name FIXME
             self.core.setAttribute(self.modelNode, 'name', 'TrainedModel');
-            callback(null);
+
+            // Set the prototxt template
+            self.savePrototxtAlone(files, function(err, hash) {
+                self.core.setAttribute(self.modelNode, 'prototxt', hash);
+                callback(null);
+            });
         });
+    };
+
+    CaffeExecutor.prototype.savePrototxtAlone = function(files, callback) {
+        let names = Object.keys(files),
+            templateName,
+            artifact;
+
+        for (var i = names.length; i--;) {
+            if (names[i].indexOf(TEMPLATE_SUFFIX) !== -1) {
+                templateName = names[i];
+            }
+        }
+
+        // Save the prototxt template in the blob and store the hash
+        this.blobClient.putFile(templateName, files[templateName], function (err) {
+            if (err) {
+                return callback(err);
+            }
+            artifact.save(callback);
+        });
+
     };
 
     CaffeExecutor.prototype.getModelsDir = function(callback) {
