@@ -4,6 +4,7 @@
 define([
     // Add the css for this button
     'js/Constants',
+    'js/RegistryKeys',
     'js/PanelBase/PanelBase',
     'js/Dialogs/PluginResults/PluginResultsDialog',
     'text!./PluginConfig.json',
@@ -22,6 +23,7 @@ define([
     'css!./styles/css/icons.css',
 ], function (
     CONSTANTS,
+    REGISTRY_KEYS,
     PanelBase,
     PluginResultsDialog,
     PluginIcons,
@@ -54,6 +56,7 @@ define([
         this.pluginIconLookup = JSON.parse(PluginIcons);
         this.results = [];
         this.currentPlugins = [];
+        this._validPlugins = [];
         this.territoryId = null;
 
         this._initialize();
@@ -64,21 +67,24 @@ define([
     _.extend(PluginButton.prototype, PanelBase.prototype);
 
     PluginButton.prototype._initialize = function () {
-        var self = this;
+        // Add listener for object changed and update the button
+        WebGMEGlobal.State.on('change:' + CONSTANTS.STATE_ACTIVE_OBJECT, this._stateActiveObjectChanged, this);
+        // TODO: I should check to see how this updates when the validPlugins
+        // gets updated. It may require a refresh of the active node currently
+    };
 
-        // Add listener for the root node
-        this.client.addEventListener(CONSTANTS.CLIENT.PROJECT_OPENED, (c, p) => {
-            if (self.territoryId) {
-                self.client.removeUI(self._update.bind(self));
-            }
-            self.territoryId = self.client.addUI(self, self._update.bind(self));
-            self.client.updateTerritory(self.territoryId, TERRITORY_PATTERN);
-        });
+    PluginButton.prototype._stateActiveObjectChanged = function (m, nodeId) {
+        var node = this.client.getNode(nodeId),
+            rawPluginRegistry = node.getRegistry(REGISTRY_KEYS.VALID_PLUGINS) || '';
+
+        // Update the button
+        this._validPlugins = rawPluginRegistry.split(' ')
+            .filter(entry => !!entry);
+        this._update();
     };
 
     PluginButton.prototype._getPluginNames = function () {
-        return (WebGMEGlobal.gmeConfig.plugin.displayAll ? WebGMEGlobal.allPlugins :
-            this.client.filterPlugins(WebGMEGlobal.allPlugins)).sort();
+        return this._validPlugins;
     };
 
     PluginButton.prototype._needsUpdate = function (pluginNames) {
@@ -87,7 +93,6 @@ define([
             _.difference(pluginNames, this.currentPlugins).length;
     };
 
-    // TODO: Consider only updating on some events
     PluginButton.prototype._update = function () {
         var pluginNames = this._getPluginNames();
         if (this._needsUpdate(pluginNames)) {
@@ -106,7 +111,8 @@ define([
 
         // Set the onclick for the plugin buttons
         var anchors = [],
-            child;
+            child,
+            listElement;
 
         for (var i = html[0].children.length; i--;) {
             child = html[0].children[i];
@@ -114,7 +120,10 @@ define([
                 anchors.push(child);
             } else {  // ul element
                 for (var k = child.children.length; k--;) {
-                    anchors.push(child.children[k].children[0]);
+                    listElement = child.children[k].children[0];
+                    if (listElement) {
+                        anchors.push(listElement);
+                    }
                 }
             }
         }
