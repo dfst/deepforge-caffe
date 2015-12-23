@@ -77,6 +77,13 @@
         "panel": "src/visualizers/panels/TrainedModel",
         "secondary": false,
         "widget": "src/visualizers/widgets/TrainedModel"
+      },
+      "RootViz": {
+        "src": "panels/RootViz/RootVizPanel",
+        "title": "RootViz",
+        "panel": "src/visualizers/panels/RootViz",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/RootViz"
       }
     },
     "layouts": {

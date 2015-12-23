@@ -35,5 +35,11 @@
     "title": "TrainedModel",
     "panel": "panels/TrainedModel/TrainedModelPanel",
     "DEBUG_ONLY": false
+  },
+  {
+    "id": "RootViz",
+    "title": "RootViz",
+    "panel": "panels/RootViz/RootVizPanel",
+    "DEBUG_ONLY": false
   }
 ]
