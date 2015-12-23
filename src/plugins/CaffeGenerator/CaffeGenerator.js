@@ -195,7 +195,7 @@ define([
             });
     };
 
-    // This is overridden in the CaffeExecutor
+    // This is overridden in the CaffeTrainer
     CaffeGenerator.prototype.beforePrototxtGeneration = function (callback) {
         callback();
     };

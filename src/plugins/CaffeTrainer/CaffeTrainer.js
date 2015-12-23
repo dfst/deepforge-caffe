@@ -33,40 +33,40 @@ define([
         TEMPLATE_SUFFIX = 'classify.prototxt.ejs';
 
     /**
-     * Initializes a new instance of CaffeExecutor.
+     * Initializes a new instance of CaffeTrainer.
      * @class
      * @augments {PluginBase}
-     * @classdesc This class represents the plugin CaffeExecutor.
+     * @classdesc This class represents the plugin CaffeTrainer.
      * @constructor
      */
-    var CaffeExecutor = function () {
+    var CaffeTrainer = function () {
         // Call base class' constructor.
         CaffeGenerator.call(this);
     };
 
     // Prototypal inheritance from PluginBase.
-    CaffeExecutor.prototype = Object.create(CaffeGenerator.prototype);
-    CaffeExecutor.prototype.constructor = CaffeExecutor;
+    CaffeTrainer.prototype = Object.create(CaffeGenerator.prototype);
+    CaffeTrainer.prototype.constructor = CaffeTrainer;
 
     /**
-     * Gets the name of the CaffeExecutor.
+     * Gets the name of the CaffeTrainer.
      * @returns {string} The name of the plugin.
      * @public
      */
-    CaffeExecutor.prototype.getName = function () {
-        return 'CaffeExecutor';
+    CaffeTrainer.prototype.getName = function () {
+        return 'CaffeTrainer';
     };
 
     /**
-     * Gets the semantic version (semver.org) of the CaffeExecutor.
+     * Gets the semantic version (semver.org) of the CaffeTrainer.
      * @returns {string} The version of the plugin.
      * @public
      */
-    CaffeExecutor.prototype.getVersion = function () {
+    CaffeTrainer.prototype.getVersion = function () {
         return '0.1.0';
     };
 
-    CaffeExecutor.prototype.getConfigStructure = function () {
+    CaffeTrainer.prototype.getConfigStructure = function () {
         var baseConfig = CaffeGenerator.prototype.getConfigStructure.call(this);
         // Remove fixed parameters
         return baseConfig
@@ -75,7 +75,7 @@ define([
             });
     };
 
-    CaffeExecutor.prototype.main = function (callback) {
+    CaffeTrainer.prototype.main = function (callback) {
         var config = this.getCurrentConfig();
 
         // Set the fixed values
@@ -85,7 +85,7 @@ define([
         CaffeGenerator.prototype.main.call(this, callback);
     };
 
-    CaffeExecutor.prototype.beforePrototxtGeneration = function (callback) {
+    CaffeTrainer.prototype.beforePrototxtGeneration = function (callback) {
         // Set the inputData value to the name of the data object (w/o the extension)
         var self = this,
             config = this.getCurrentConfig();
@@ -111,7 +111,7 @@ define([
 
     // Override from CaffeGenerator
     // Train the model
-    CaffeExecutor.prototype._saveOutput = function (name, files, callback) {
+    CaffeTrainer.prototype._saveOutput = function (name, files, callback) {
         var self = this,
             artifact,
             executorConfig,
@@ -175,7 +175,7 @@ define([
 
     // Retrieve the zipped data files from the blob and add them to the executor
     // files
-    CaffeExecutor.prototype.addDataFromBlob = function(files, callback) {
+    CaffeTrainer.prototype.addDataFromBlob = function(files, callback) {
         // Get the data node
         var self = this;
 
@@ -202,7 +202,7 @@ define([
         });
     };
 
-    CaffeExecutor.prototype.getDataNode = function(callback) {
+    CaffeTrainer.prototype.getDataNode = function(callback) {
         var self = this;
         self.core.loadChildren(self.activeNode, function(e, children) {
             var dataNodes,
@@ -226,7 +226,7 @@ define([
         });
     };
 
-    CaffeExecutor.prototype.executeJob = function(hash, callback) {
+    CaffeTrainer.prototype.executeJob = function(hash, callback) {
         var self = this,
             executorClient;
 
@@ -274,7 +274,7 @@ define([
 
     };
 
-    CaffeExecutor.prototype.atSucceedJob = function(jInfo, callback) {
+    CaffeTrainer.prototype.atSucceedJob = function(jInfo, callback) {
         var self = this,
             modelHash;
 
@@ -289,7 +289,7 @@ define([
         });
     };
 
-    CaffeExecutor.prototype.createTrainedNode = function(files, callback) {
+    CaffeTrainer.prototype.createTrainedNode = function(files, callback) {
         var self = this;
 
         self.getModelsDir(function(e, modelsDir) {
@@ -313,7 +313,7 @@ define([
         });
     };
 
-    CaffeExecutor.prototype.savePrototxtAlone = function(files, callback) {
+    CaffeTrainer.prototype.savePrototxtAlone = function(files, callback) {
         let names = Object.keys(files),
             templateName,
             artifact;
@@ -325,16 +325,10 @@ define([
         }
 
         // Save the prototxt template in the blob and store the hash
-        this.blobClient.putFile(templateName, files[templateName], function (err) {
-            if (err) {
-                return callback(err);
-            }
-            artifact.save(callback);
-        });
-
+        this.blobClient.putFile(templateName, files[templateName], callback);
     };
 
-    CaffeExecutor.prototype.getModelsDir = function(callback) {
+    CaffeTrainer.prototype.getModelsDir = function(callback) {
         var self = this,
             modelsDir;
 
@@ -349,5 +343,5 @@ define([
         });
     };
 
-    return CaffeExecutor;
+    return CaffeTrainer;
 });

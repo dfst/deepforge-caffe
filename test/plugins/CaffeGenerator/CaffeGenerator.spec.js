@@ -62,7 +62,7 @@ describe.only('CaffeGenerator', function () {
                 project: project,
                 commitHash: commitHash,
                 branchName: 'test',
-                activeNode: '/858268398/786377943'  // LeNet
+                activeNode: '/1567574167/392272865'  // LeNet
             };
 
         manager.executePlugin(pluginName, pluginConfig, context, function (err, pluginResult) {
