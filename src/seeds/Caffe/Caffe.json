@@ -66,6 +66,7 @@
     "ba921733-1d3e-8b06-689f-94919916f453": "1810091982",
     "bbedaf50-6813-1a65-1208-f6b3f7dfbfb0": "1625866296",
     "bc0f9101-6cd0-133e-9ad5-c31212fd9341": "1811306995",
+    "bcb89890-21cb-3133-1f36-3abdf3cc99d0": "490281807",
     "bdb7cba1-b95f-d8d7-2961-895692568abc": "377828097",
     "c32116c3-4f79-4241-53cb-957406e5bd84": "1146023388",
     "c796eb52-c024-a835-f9a2-bde2a7c9429b": "392272865",
@@ -131,6 +132,7 @@
       "5c249fff-92eb-8efe-0d8f-14c9e8199675": {},
       "818957ed-b979-e02e-1aca-fc79995c52fd": {},
       "84d70ae7-fdce-6583-b61d-4a633aa41eef": {},
+      "bcb89890-21cb-3133-1f36-3abdf3cc99d0": {},
       "f77b3d91-5e64-f7e8-0fa7-a7f674029311": {}
     },
     "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045": {},
@@ -3514,6 +3516,24 @@
       "sets": {},
       "constraints": {}
     },
+    "bcb89890-21cb-3133-1f36-3abdf3cc99d0": {
+      "attributes": {
+        "arch_name": "LeNet",
+        "data_name": "mnist",
+        "model": "63927d0c641ead52aba32f7b4790b8f90272a584",
+        "name": "Caffe/LeNet/mnist",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
+      "sets": {},
+      "constraints": {}
+    },
     "bdb7cba1-b95f-d8d7-2961-895692568abc": {
       "attributes": {
         "name": "Sigmoid"
@@ -3786,7 +3806,8 @@
           "x": 264,
           "y": 587
         },
-        "validPlugins": "CaffeClassifier"
+        "validPlugins": "CaffeClassifier",
+        "validVisualizers": "TrainedModel"
       },
       "sets": {},
       "constraints": {}
@@ -3959,7 +3980,7 @@
           "x": 362,
           "y": 589
         },
-        "validVisualizers": "TrainedModelList"
+        "validVisualizers": "TrainedModelList VizSetter"
       },
       "sets": {},
       "constraints": {}
