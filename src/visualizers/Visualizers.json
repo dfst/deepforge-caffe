@@ -3,7 +3,8 @@
     "id": "CNNViz",
     "title": "Network Editor",
     "panel": "panels/CNNViz/CNNVizPanel",
-    "DEBUG_ONLY": false
+    "DEBUG_ONLY": false,
+    "default": true
   },
   {
     "id": "METAAspect",
