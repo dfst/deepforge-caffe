@@ -29,5 +29,11 @@
     "title": "TrainedModelList",
     "panel": "panels/TrainedModelList/TrainedModelListPanel",
     "DEBUG_ONLY": false
+  },
+  {
+    "id": "TrainedModel",
+    "title": "TrainedModel",
+    "panel": "panels/TrainedModel/TrainedModelPanel",
+    "DEBUG_ONLY": false
   }
 ]
