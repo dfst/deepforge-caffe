@@ -4,6 +4,7 @@
 define([
     // Add the css for this button
     'js/Constants',
+    'js/RegistryKeys',
     'js/PanelBase/PanelBase',
     'js/Dialogs/PluginResults/PluginResultsDialog',
     'text!./PluginConfig.json',
@@ -22,6 +23,7 @@ define([
     'css!./styles/css/icons.css',
 ], function (
     CONSTANTS,
+    REGISTRY_KEYS,
     PanelBase,
     PluginResultsDialog,
     PluginIcons,
@@ -73,7 +75,7 @@ define([
 
     PluginButton.prototype._stateActiveObjectChanged = function (m, nodeId) {
         var node = this.client.getNode(nodeId),
-            rawPluginRegistry = node.getRegistry('validPlugins') || '';
+            rawPluginRegistry = node.getRegistry(REGISTRY_KEYS.VALID_PLUGINS) || '';
 
         // Update the button
         this._validPlugins = rawPluginRegistry.split(' ')
