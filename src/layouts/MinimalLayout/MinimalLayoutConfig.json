@@ -19,8 +19,8 @@
       "DEBUG_ONLY": false
     },
     {
-      "id": "NetworkEditor",
-      "panel": "CNNViz/CNNVizPanel",
+      "id": "VizSetter",
+      "panel": "VizSetter/VizSetterPanel",
       "container": "center",
       "DEBUG_ONLY": false
     },

@@ -63,6 +63,13 @@
         "panel": "src/visualizers/panels/TrainedModelList",
         "secondary": false,
         "widget": "src/visualizers/widgets/TrainedModelList"
+      },
+      "VizSetter": {
+        "src": "panels/VizSetter/VizSetterPanel",
+        "title": "VizSetter",
+        "panel": "src/visualizers/panels/VizSetter",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/VizSetter"
       }
     },
     "layouts": {
