@@ -165,8 +165,8 @@ define([
             lowerToMetaName[name.toLowerCase()] = name;
         });
 
-        // Create the CNN parent in the root
-        cnn = this.core.createNode({parent: this.rootNode, base: this.META.CNN});
+        // Create the CNN parent in the active node
+        cnn = this.core.createNode({parent: this.activeNode, base: this.META.CNN});
         this.core.setAttribute(cnn, 'name', name);
 
         // Create the nodes

@@ -36,6 +36,7 @@
     "5882c7d2-6095-74ff-1a24-33a829615be4": "1873620546",
     "589a72ea-74ec-e505-e650-1561f50b529b": "302131555",
     "5b89dca8-d95e-5718-381d-226c61d82448": "820897121",
+    "5c249fff-92eb-8efe-0d8f-14c9e8199675": "1913675205",
     "64b918db-abd0-ba36-f678-eaca629abac4": "2041320494",
     "6d3e0974-e5e6-af6d-6e15-3b498da79811": "304296719",
     "6f0d89c0-cf0d-ab7b-89d0-468d04800269": "1613601850",
@@ -123,7 +124,8 @@
       }
     },
     "aeb311b5-49d6-42d3-7cfa-21cefce69820": {
-      "4348c9db-b09c-c290-2a76-b83b5708c81f": {}
+      "4348c9db-b09c-c290-2a76-b83b5708c81f": {},
+      "5c249fff-92eb-8efe-0d8f-14c9e8199675": {}
     },
     "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045": {},
     "d444e3d8-3135-e175-ebcf-2af88770ddf2": {},
@@ -917,7 +919,8 @@
         "position": {
           "x": 411,
           "y": 79
-        }
+        },
+        "validPlugins": "NetworkImporter"
       },
       "sets": {},
       "constraints": {}
@@ -2664,6 +2667,22 @@
       "sets": {},
       "constraints": {}
     },
+    "5c249fff-92eb-8efe-0d8f-14c9e8199675": {
+      "attributes": {
+        "model": "7fbe6174c6a1e1cc293f55db7d6f1f5b987e6331",
+        "name": "TrainedModel",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
+      "sets": {},
+      "constraints": {}
+    },
     "64b918db-abd0-ba36-f678-eaca629abac4": {
       "attributes": {},
       "base": "bc0f9101-6cd0-133e-9ad5-c31212fd9341",
@@ -3512,8 +3531,8 @@
       },
       "registry": {
         "position": {
-          "x": 25,
-          "y": 58
+          "x": 19,
+          "y": 60
         }
       },
       "sets": {},
