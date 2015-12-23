@@ -1,12 +1,9 @@
 import sys
-# TODO: Change the next line
-sys.path.append("/home/irishninja/projects/caffe/python");
-
+import os
 import caffe
 
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 
 # Get the values from cmd
 if len(sys.argv) < 3:
