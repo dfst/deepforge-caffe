@@ -56,6 +56,13 @@
         "panel": "src/visualizers/panels/ForgeFlow",
         "secondary": false,
         "widget": "src/visualizers/widgets/ForgeFlow"
+      },
+      "TrainedModelList": {
+        "src": "panels/TrainedModelList/TrainedModelListPanel",
+        "title": "TrainedModelList",
+        "panel": "src/visualizers/panels/TrainedModelList",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/TrainedModelList"
       }
     },
     "layouts": {

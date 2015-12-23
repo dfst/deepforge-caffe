@@ -40,6 +40,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
             classifyName = name+'_classify.prototxt.ejs',
             template,
             labelName,
+            dataName,
             node;
 
         // Add the label layer info
@@ -61,6 +62,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
                 // Add the data attributes
                 node.location = '"'+this.runOptions.inputData+'"';
                 node.backend = this.runOptions.dataType;
+                dataName = node.name;
             }
         }
 
@@ -84,7 +86,9 @@ define(['TemplateCreator/outputs/OutputGenerator',
         var metadata = {
             type: 'Caffe',
             trainCommand: 'caffe train --solver='+trainName,
-            testCommand: ''
+            testCommand: '',
+            architecture: tree.name,
+            data: dataName
         };  // Add test cmd FIXME 
         outputFiles.metadata = JSON.stringify(metadata);
 

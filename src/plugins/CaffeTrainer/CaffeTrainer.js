@@ -260,13 +260,7 @@ define([
                     if (jInfo.status === 'SUCCESS') {
                         self.atSucceedJob(jInfo, callback);
                     } else {
-                        //Add the resultHashes even though job failed (for user to debug).
-                        for (key in jInfo.resultHashes) {
-                            if (jInfo.resultHashes.hasOwnProperty(key)) {
-                                self.result.addArtifact(jInfo.resultHashes[key]);
-                            }
-                        }
-                        callback('Job execution failed', self.result);
+                        self.atFailedJob(jInfo, callback);
                     }
                 });
             }, 400);
@@ -290,8 +284,23 @@ define([
         });
     };
 
+    CaffeTrainer.prototype.atFailedJob = function(jInfo, callback) {
+        //Add the resultHashes even though job failed (for user to debug).
+        for (var key in jInfo.resultHashes) {
+            if (jInfo.resultHashes.hasOwnProperty(key)) {
+                this.result.addArtifact(jInfo.resultHashes[key]);
+            }
+        }
+        this.core.setAttribute(this.modelNode, 'failed', true);
+        this.save('Updated failed model', (err) => {
+            callback('Job execution failed', this.result);
+        });
+    };
+
     CaffeTrainer.prototype.createTrainedNode = function(files, callback) {
-        var self = this;
+        var self = this,
+            metadata = JSON.parse(files.metadata),
+            name;
 
         self.getModelsDir(function(e, modelsDir) {
             // Create the trained model node and attach the trained model to it
@@ -303,15 +312,26 @@ define([
                 base: self.META.Model
             });
 
-            // Set an intelligent model name FIXME
-            self.core.setAttribute(self.modelNode, 'name', 'TrainedModel');
+            // Set an intelligent model name
+            name = self.createTrainedNodeName(metadata.architecture, metadata.data);
+            self.core.setAttribute(self.modelNode, 'name', name);
+            self.core.setAttribute(self.modelNode, 'arch_name', metadata.architecture);
+            self.core.setAttribute(self.modelNode, 'data_name', metadata.data);
 
             // Set the prototxt template
             self.savePrototxtAlone(files, function(err, hash) {
                 self.core.setAttribute(self.modelNode, 'prototxt', hash);
-                callback(null);
+                self.save('Created model and started training', callback)
             });
         });
+    };
+
+    CaffeTrainer.prototype.createTrainedNodeName = function(arch, data) {
+        return [
+            'Caffe',
+            arch.substring(0, 10),
+            data.substring(0, 10)
+        ].join('/');
     };
 
     CaffeTrainer.prototype.savePrototxtAlone = function(files, callback) {

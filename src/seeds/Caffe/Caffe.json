@@ -47,6 +47,8 @@
     "7c1d4f53-e9cf-26c4-808b-48649655ea70": "1119716849",
     "7ce0237e-d67f-ee55-e188-5a01307a492f": "751074888",
     "7fcfb5ad-817f-908d-ce36-86f8074bc95c": "1472510253",
+    "818957ed-b979-e02e-1aca-fc79995c52fd": "7587987",
+    "84d70ae7-fdce-6583-b61d-4a633aa41eef": "1516926456",
     "8546f13d-7845-f868-18f0-483387470708": "65011778",
     "89c3b8b5-01ac-f2b9-e1f3-cb30acc96c44": "643890671",
     "89d5ae14-6a83-c62e-d911-21d37662b36a": "437164767",
@@ -91,6 +93,7 @@
     "f6369b99-f57a-013a-a675-849cd0d39125": "1521274775",
     "f6a25c63-0864-0c63-66d9-8aa6139f0e77": "1665416337",
     "f6d009c9-6e45-4257-69b8-cf501175b74f": "828353485",
+    "f77b3d91-5e64-f7e8-0fa7-a7f674029311": "2073844636",
     "f81571f1-1fce-1ddd-4bb6-546b9ccecbbd": "841801467",
     "fa0c1f28-2be0-c890-facb-8bd69c031920": "1213207378",
     "fa0ed121-aa39-88e8-675e-62ca915cb367": "1506226311",
@@ -125,7 +128,10 @@
     },
     "aeb311b5-49d6-42d3-7cfa-21cefce69820": {
       "4348c9db-b09c-c290-2a76-b83b5708c81f": {},
-      "5c249fff-92eb-8efe-0d8f-14c9e8199675": {}
+      "5c249fff-92eb-8efe-0d8f-14c9e8199675": {},
+      "818957ed-b979-e02e-1aca-fc79995c52fd": {},
+      "84d70ae7-fdce-6583-b61d-4a633aa41eef": {},
+      "f77b3d91-5e64-f7e8-0fa7-a7f674029311": {}
     },
     "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045": {},
     "d444e3d8-3135-e175-ebcf-2af88770ddf2": {},
@@ -927,8 +933,10 @@
     },
     "4348c9db-b09c-c290-2a76-b83b5708c81f": {
       "attributes": {
+        "arch_name": "LeNet",
+        "data_name": "MNIST",
         "model": "dbbc785aea88a893342ba57002ed8b2eae5fea1c",
-        "name": "TrainedModel",
+        "name": "GoodModel",
         "prototxt": "fc7fe5cf07a1f52f019a0aee9218b49628b61c5c"
       },
       "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
@@ -2669,6 +2677,8 @@
     },
     "5c249fff-92eb-8efe-0d8f-14c9e8199675": {
       "attributes": {
+        "arch_name": "LeNet",
+        "data_name": "MNIST",
         "model": "7fbe6174c6a1e1cc293f55db7d6f1f5b987e6331",
         "name": "TrainedModel",
         "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
@@ -2987,6 +2997,40 @@
           "y": 610
         }
       },
+      "sets": {},
+      "constraints": {}
+    },
+    "818957ed-b979-e02e-1aca-fc79995c52fd": {
+      "attributes": {
+        "model": "7fbe6174c6a1e1cc293f55db7d6f1f5b987e6331",
+        "name": "TrainedModel",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
+      "sets": {},
+      "constraints": {}
+    },
+    "84d70ae7-fdce-6583-b61d-4a633aa41eef": {
+      "attributes": {
+        "arch_name": "LeNet",
+        "data_name": "mnist",
+        "failed": true,
+        "name": "Caffe/LeNet/mnist",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
       "sets": {},
       "constraints": {}
     },
@@ -3705,6 +3749,9 @@
     },
     "d444e3d8-3135-e175-ebcf-2af88770ddf2": {
       "attributes": {
+        "arch_name": "",
+        "data_name": "",
+        "failed": false,
         "model": "",
         "name": "Model",
         "prototxt": ""
@@ -3717,6 +3764,15 @@
           },
           "prototxt": {
             "type": "asset"
+          },
+          "data_name": {
+            "type": "string"
+          },
+          "arch_name": {
+            "type": "string"
+          },
+          "failed": {
+            "type": "boolean"
           }
         }
       },
@@ -3902,7 +3958,8 @@
         "position": {
           "x": 362,
           "y": 589
-        }
+        },
+        "validVisualizers": "TrainedModelList"
       },
       "sets": {},
       "constraints": {}
@@ -4269,6 +4326,22 @@
           "y": 322
         }
       },
+      "sets": {},
+      "constraints": {}
+    },
+    "f77b3d91-5e64-f7e8-0fa7-a7f674029311": {
+      "attributes": {
+        "model": "12ee54170e9ac78c206f1f1721fa9584062bb9d2",
+        "name": "TrainedModel",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
       "sets": {},
       "constraints": {}
     },
