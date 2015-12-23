@@ -22,5 +22,11 @@
     "title": "ForgeFlow",
     "panel": "panels/ForgeFlow/ForgeFlowPanel",
     "DEBUG_ONLY": false
+  },
+  {
+    "id": "TrainedModelList",
+    "title": "TrainedModelList",
+    "panel": "panels/TrainedModelList/TrainedModelListPanel",
+    "DEBUG_ONLY": false
   }
 ]

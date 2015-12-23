@@ -1,0 +1,12 @@
+/**
+ * This file is for any scss that you may want for this visualizer.
+ */
+.trained-model-list {
+  outline: none; }
+  .trained-model-list .table td {
+    text-align: center; }
+  .trained-model-list .table .model-name {
+    font-weight: bold;
+    font-size: large; }
+  .trained-model-list .table .training-status {
+    font-style: italic; }
