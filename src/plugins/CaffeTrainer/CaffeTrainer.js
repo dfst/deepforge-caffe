@@ -285,7 +285,8 @@ define([
         this.core.setAttribute(this.modelNode, 'model', modelHash);
 
         this.save('Created model at: '+name, function (err) {
-            callback(null, self.result);
+            self.result.setSuccess(!err);
+            callback(err, self.result);
         });
     };
 
