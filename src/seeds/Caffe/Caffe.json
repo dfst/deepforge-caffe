@@ -90,6 +90,7 @@
     "e4cae843-d62d-e2cf-9526-4ca368594e17": "174573157",
     "e6d010ee-99c4-aee0-8e8d-feb243b34efc": "1970558615",
     "ee81fbed-4f73-dab9-a759-7a6ac3963021": "1962838720",
+    "efca6fe2-2114-cd60-8859-24bee3274edd": "1203394664",
     "f5fbea99-978e-1037-9019-8cfe066b42db": "165841022",
     "f6369b99-f57a-013a-a675-849cd0d39125": "1521274775",
     "f6a25c63-0864-0c63-66d9-8aa6139f0e77": "1665416337",
@@ -101,7 +102,6 @@
     "fe95eaff-0a9a-fbe0-92d4-b48ef4bea055": "1270421588"
   },
   "containment": {
-    "0b24acdd-b806-e622-613c-6f186710c770": {},
     "3c12d6b2-fd02-7dec-e903-13eee45f204d": {
       "41908e4b-b843-a5ef-d963-a830a06e3189": {}
     },
@@ -133,14 +133,15 @@
       "818957ed-b979-e02e-1aca-fc79995c52fd": {},
       "84d70ae7-fdce-6583-b61d-4a633aa41eef": {},
       "bcb89890-21cb-3133-1f36-3abdf3cc99d0": {},
+      "efca6fe2-2114-cd60-8859-24bee3274edd": {},
       "f77b3d91-5e64-f7e8-0fa7-a7f674029311": {}
     },
     "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045": {},
     "d444e3d8-3135-e175-ebcf-2af88770ddf2": {},
-    "dad0fba8-4e62-bf58-5d60-93e4fda816df": {},
     "fa0c1f28-2be0-c890-facb-8bd69c031920": {
       "025ac97b-357f-ee00-52b7-d61cbec92b45": {},
       "02c81c5b-11de-6931-9df8-cd807875f8cf": {},
+      "0b24acdd-b806-e622-613c-6f186710c770": {},
       "0b7d2f24-dbd8-41fc-21c8-572ed3d98c87": {},
       "0e7ec20c-ad24-72da-254e-7b1ddeb96b5c": {},
       "177b17f9-2ae5-ca74-ede9-fcbbe2304aa7": {},
@@ -185,6 +186,7 @@
       "d7b67be7-a29a-1c42-5d18-98167710b2b7": {},
       "d84a3fc8-5371-d21a-7a20-738d562f01fc": {},
       "da2d435d-9bfc-00d0-644a-540593bd4053": {},
+      "dad0fba8-4e62-bf58-5d60-93e4fda816df": {},
       "dc1c7d62-e8aa-978a-194e-5d3591bc206c": {},
       "de92e114-12a2-3c24-cad6-45da2628a0a2": {},
       "e27c48d4-8167-d84b-95d3-4e2b81b27bfd": {},
@@ -275,7 +277,7 @@
           ]
         }
       },
-      "parent": "4444f980-1c88-cd19-ad6d-2a7cad57dacf",
+      "parent": "fa0c1f28-2be0-c890-facb-8bd69c031920",
       "pointers": {
         "base": "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045"
       },
@@ -283,8 +285,8 @@
         "decorator": "DefaultDecorator",
         "isAbstract": false,
         "position": {
-          "x": 463,
-          "y": 590
+          "x": 42,
+          "y": 576
         }
       },
       "sets": {},
@@ -1040,7 +1042,8 @@
           "FCO_ID": "/1"
         },
         "usedAddOns": "ConstraintAddOn",
-        "validPlugins": "CaffeTrainer NetworkImporter CaffeGenerator"
+        "validPlugins": "",
+        "validVisualizers": "RootViz ModelEditor"
       },
       "sets": {
         "MetaAspectSet": [
@@ -3969,7 +3972,7 @@
           ]
         }
       },
-      "parent": "4444f980-1c88-cd19-ad6d-2a7cad57dacf",
+      "parent": "fa0c1f28-2be0-c890-facb-8bd69c031920",
       "pointers": {
         "base": "cd891e7b-e2ea-e929-f6cd-9faf4f1fc045"
       },
@@ -3977,8 +3980,8 @@
         "decorator": "DefaultDecorator",
         "isAbstract": false,
         "position": {
-          "x": 362,
-          "y": 589
+          "x": -7,
+          "y": 514
         },
         "validVisualizers": "TrainedModelList VizSetter"
       },
@@ -4162,6 +4165,23 @@
           "y": 353
         }
       },
+      "sets": {},
+      "constraints": {}
+    },
+    "efca6fe2-2114-cd60-8859-24bee3274edd": {
+      "attributes": {
+        "arch_name": "LeNet",
+        "data_name": "mnist",
+        "name": "Caffe/LeNet/mnist",
+        "prototxt": "89f75ef5bbd7840e1136a1c7db43934eb98b7529"
+      },
+      "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2",
+      "meta": {},
+      "parent": "aeb311b5-49d6-42d3-7cfa-21cefce69820",
+      "pointers": {
+        "base": "d444e3d8-3135-e175-ebcf-2af88770ddf2"
+      },
+      "registry": {},
       "sets": {},
       "constraints": {}
     },
