@@ -14,12 +14,10 @@ define([
         this._dialog = null;
     };
 
-    AddNodeDialog.prototype.show = function(name, pairs) {
+    AddNodeDialog.prototype.show = function(title, pairs) {
         // Populate the template
         var self = this,
-            content = this._template({
-                name: '"' + name.toUpperCase() + '"'
-            }),
+            content = this._template({title}),
             nodes = pairs.map(this.pairToHtml.bind(this)),
             container,
             row;

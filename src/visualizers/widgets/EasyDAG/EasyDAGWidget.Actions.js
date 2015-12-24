@@ -8,14 +8,38 @@ define([
     var EasyDAGWidgetActions = function() {
     };
 
+    EasyDAGWidgetActions.prototype.onCreateInitialNode = function() {
+        var initialNodes = this.getValidInitialNodes(),
+            initialNode = initialNodes[0];
+
+        if (initialNodes.length > 1) {
+            // Create the modal view with all possible subsequent nodes
+            var dialog = new AddNodeDialog(),
+                title = 'Which node would you like to create?';
+
+            dialog.show(title, initialNodes.map(node => {
+                return {node};
+            }));
+            dialog.onSelect = nodeInfo => {
+                if (nodeInfo) {
+                    this.createNode(nodeInfo.node.id);
+                }
+            };
+        } else {
+            this.createNode(initialNode.id);
+        }
+    };
+
     EasyDAGWidgetActions.prototype.onAddButtonClicked = function(item) {
         var successorPairs = this.getValidSuccessorNodes(item.id),
             successor = successorPairs[0];
 
         if (successorPairs.length > 1) {
             // Create the modal view with all possible subsequent nodes
-            var dialog = new AddNodeDialog();
-            dialog.show(item.name, successorPairs);
+            var dialog = new AddNodeDialog(),
+                title = `Select node to create after "#{item.name.toUpperCase()}"`;
+
+            dialog.show(title, successorPairs);
             dialog.onSelect = pair => {
                 if (pair) {
                     this.createConnectedNode(item.id, pair.conn.id, pair.node.id);

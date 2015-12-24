@@ -577,7 +577,7 @@
         "name": "HingeLoss",
         "norm": "L1"
       },
-      "base": "ccc0db24-3dba-3694-cb4a-9c41744f2680",
+      "base": "e6d010ee-99c4-aee0-8e8d-feb243b34efc",
       "meta": {
         "attributes": {
           "norm": {
@@ -592,7 +592,7 @@
       },
       "parent": "fa0c1f28-2be0-c890-facb-8bd69c031920",
       "pointers": {
-        "base": "ccc0db24-3dba-3694-cb4a-9c41744f2680"
+        "base": "e6d010ee-99c4-aee0-8e8d-feb243b34efc"
       },
       "registry": {
         "SVGIcon": "svgs/euclideanloss.svg",
@@ -1043,7 +1043,7 @@
         },
         "usedAddOns": "ConstraintAddOn",
         "validPlugins": "",
-        "validVisualizers": "RootViz ModelEditor"
+        "validVisualizers": "RootViz ModelEditor METAAspect"
       },
       "sets": {
         "MetaAspectSet": [
@@ -2631,11 +2631,11 @@
       "attributes": {
         "name": "Split"
       },
-      "base": "ccc0db24-3dba-3694-cb4a-9c41744f2680",
+      "base": "02c81c5b-11de-6931-9df8-cd807875f8cf",
       "meta": {},
       "parent": "fa0c1f28-2be0-c890-facb-8bd69c031920",
       "pointers": {
-        "base": "ccc0db24-3dba-3694-cb4a-9c41744f2680"
+        "base": "02c81c5b-11de-6931-9df8-cd807875f8cf"
       },
       "registry": {
         "isAbstract": false,
@@ -3268,7 +3268,7 @@
       },
       "registry": {
         "SVGIcon": "svgs/label.svg",
-        "isAbstract": false,
+        "isAbstract": true,
         "position": {
           "x": 86,
           "y": 510

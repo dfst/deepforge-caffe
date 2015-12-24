@@ -20,8 +20,10 @@ define([
 
     EasyDAGControlEventHandlers.prototype._initWidgetEventHandlers = function() {
         this._widget.getValidSuccessorNodes = this._getValidSuccessorNodes.bind(this);
+        this._widget.getValidInitialNodes = this._getValidInitialNodes.bind(this);
         this._widget.filterNodesForMove = this._filterNodesForMove.bind(this);
         this._widget.createConnectedNode = this._createConnectedNode.bind(this);
+        this._widget.createNode = this._createNode.bind(this);
         this._widget.removeSubtreeAt = this._removeSubtreeAt.bind(this);
 
         // Decorator callbacks
@@ -71,6 +73,57 @@ define([
 
         this._client.completeTransaction();
         
+    };
+
+    EasyDAGControlEventHandlers.prototype._createNode = function(baseId) {
+        var parentId = this._currentNodeId;
+        return this._client.createChild({parentId, baseId});
+    };
+
+    EasyDAGControlEventHandlers.prototype._getValidInitialNodes = function() {
+        // Find nodes that only have outgoing connections
+        var allIds = [],
+            allConnIds,
+            validInitialNodes,
+            dsts;
+
+        this._client.getChildrenMeta(this._currentNodeId).items
+            // Get all descendents
+            .map(info => this._getAllDescendentIds(info.id))
+            .reduce((prev, curr) => prev.concat(curr))
+
+            // Add the child to the validChildren dictionary
+            .forEach(id => allIds.push(id));
+
+        validInitialNodes = {};
+        allConnIds = [];
+
+        for (let i = allIds.length; i--;) {
+            if (this._client.getNode(allIds[i]).isConnection()) {
+                allConnIds.push(allIds[i]);
+            } else {
+                validInitialNodes[allIds[i]] = true;
+            }
+        }
+
+        // For each connection, get the destination nodes and remove
+        // them from the potential initial nodes
+        for (let i = allConnIds.length; i--;) {
+            dsts = this._client.getPointerMeta(allConnIds[i], CONN_PTR.END).items
+                .map(item => item.id)
+                // Get the descendents
+                .map(id => this._getAllDescendentIds(id))
+                .reduce((prev, curr) => prev.concat(curr));
+
+            for (let j = dsts.length; j--;) {
+                delete validInitialNodes[dsts[j]];
+            }
+        }
+
+        return Object.keys(validInitialNodes)
+            // Remove abstract nodes
+            .filter(nodeId => !this._client.getNode(nodeId).isAbstract())
+            .map(nodeId => this._getObjectDescriptor(nodeId));
     };
 
     // Get the valid nodes that can follow the given node

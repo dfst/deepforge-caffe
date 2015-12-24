@@ -59,6 +59,7 @@ define([
 
         this.selectionManager.redraw();
         this.updateContainerWidth();
+        this.updateEmptyMsg();
 
         // READ UPDATES
         //nodeIds = Object.keys(this.items);
@@ -104,11 +105,11 @@ define([
     };
 
     EasyDAGWidgetRefresher.prototype.updateContainerWidth = function () {
-        var width = Math.max(this.$el.width(), this._getMaxAlongAxis('x')),
-            height = Math.max(this.$el.height(), this._getMaxAlongAxis('y'));
+        this.width = Math.max(this.$el.width(), this._getMaxAlongAxis('x'));
+        this.height = Math.max(this.$el.height(), this._getMaxAlongAxis('y'));
 
-        this._$svg.attr('width', width);
-        this._$svg.attr('height', height);
+        this._$svg.attr('width', this.width);
+        this._$svg.attr('height', this.height);
     };
 
     return EasyDAGWidgetRefresher;

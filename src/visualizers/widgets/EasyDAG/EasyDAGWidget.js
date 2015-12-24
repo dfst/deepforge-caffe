@@ -11,6 +11,7 @@ define([
     './EasyDAGWidget.Items',
     './EasyDAGWidget.Actions',
     './EasyDAGWidget.Refresh',
+    './EasyDAGWidget.Initial',
     './DAGItem',
     './Connection',
     './SelectionManager',
@@ -22,6 +23,7 @@ define([
     EasyDAGWidgetItems,
     EasyDAGWidgetActions,
     EasyDAGWidgetRefresher,
+    EasyDAGWidgetInitial,
     DAGItem,
     Connection,
     SelectionManager
@@ -49,6 +51,8 @@ define([
 
         // Items
         this.items = {};
+        this.itemCount = 0;
+
         this.connections = {};
         this.graph = new dagre.graphlib.Graph();
 
@@ -57,6 +61,7 @@ define([
         this._initialize();
         this.resetGraph();
 
+        EasyDAGWidgetInitial.call(this);
         EasyDAGWidgetItems.call(this);
 
         // Selection manager
@@ -65,9 +70,7 @@ define([
     };
 
     EasyDAGWidget.prototype._initialize = function () {
-        var width = this.$el.width(),
-            height = this.$el.height(),
-            self = this;
+        var self = this;
 
         //set Widget title
         this.$el.addClass(WIDGET_CLASS);
@@ -134,6 +137,8 @@ define([
 
             this.items[desc.id] = item;
             this.graph.setNode(item.id, item);
+            this._empty = false;
+            this.itemCount++;
         }
         this.refreshUI();
     };
@@ -143,6 +148,7 @@ define([
         this.graph.setEdge(desc.src, desc.dst, conn);
 
         this.connections[desc.id] = conn;
+        this.itemCount++;
         this.refreshUI();
     };
 
@@ -152,6 +158,8 @@ define([
         } else {
             this._removeConnection(gmeId);
         }
+        this.itemCount--;
+        this._empty = this.itemCount === 0;
     };
 
     EasyDAGWidget.prototype._removeNode = function (gmeId) {
@@ -210,7 +218,8 @@ define([
         EasyDAGWidget.prototype,
         EasyDAGWidgetItems.prototype,
         EasyDAGWidgetActions.prototype,
-        EasyDAGWidgetRefresher.prototype
+        EasyDAGWidgetRefresher.prototype,
+        EasyDAGWidgetInitial.prototype
     );
 
     EasyDAGWidget.prototype.refreshUI = 
