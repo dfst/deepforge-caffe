@@ -1,0 +1,10 @@
+/**
+ * This file is for any scss that you may want for this visualizer.
+ */
+.root-viz {
+  outline: none; }
+  .root-viz .description {
+    font-size: large; }
+  .root-viz .architectures-node-panel path {
+    fill: blue;
+    stroke: blue; }
