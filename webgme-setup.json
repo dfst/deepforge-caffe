@@ -16,6 +16,10 @@
       "CaffeClassifier": {
         "src": "src/plugins/CaffeClassifier",
         "test": "test/plugins/CaffeClassifier"
+      },
+      "UploadData": {
+        "src": "src/plugins/UploadData",
+        "test": "test/plugins/UploadData"
       }
     },
     "addOns": {},
@@ -84,6 +88,13 @@
         "panel": "src/visualizers/panels/RootViz",
         "secondary": false,
         "widget": "src/visualizers/widgets/RootViz"
+      },
+      "ForgeActionButton": {
+        "src": "panels/ForgeActionButton/ForgeActionButtonPanel",
+        "title": "ForgeActionButton",
+        "panel": "src/visualizers/panels/ForgeActionButton",
+        "secondary": true,
+        "widget": "src/visualizers/widgets/ForgeActionButton"
       }
     },
     "layouts": {
