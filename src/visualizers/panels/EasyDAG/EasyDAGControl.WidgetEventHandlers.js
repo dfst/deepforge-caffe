@@ -169,7 +169,7 @@ define([
                 .map(item => item.id)
                 .reduce((startsAtNode, id) => {
                     return startsAtNode || ancestors[id];
-                });
+                }, false);
         });
 
         // Get all (unique) valid destinations of these connections
