@@ -132,6 +132,9 @@
       },
       "InputDecorator": {
         "src": "src/decorators/InputDecorator"
+      },
+      "LossDecorator": {
+        "src": "src/decorators/LossDecorator"
       }
     },
     "addons": {}
