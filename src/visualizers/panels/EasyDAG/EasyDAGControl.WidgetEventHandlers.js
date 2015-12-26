@@ -65,6 +65,7 @@ define([
 
         // create the nodes
         dstId = this._client.createChild({parentId, baseId: dstBaseId});
+        this.onAddItem(dstId);
         connId = this._client.createChild({parentId, baseId: connBaseId});
 
         // connect the connection to the node
@@ -76,8 +77,15 @@ define([
     };
 
     EasyDAGControlEventHandlers.prototype._createNode = function(baseId) {
-        var parentId = this._currentNodeId;
-        return this._client.createChild({parentId, baseId});
+        var parentId = this._currentNodeId,
+            newNodeId = this._client.createChild({parentId, baseId});
+
+        this.onAddItem(newNodeId);
+        return newNodeId;
+    };
+
+    EasyDAGControlEventHandlers.prototype.onAddItem = function(baseId) {
+        // nop
     };
 
     EasyDAGControlEventHandlers.prototype._getValidInitialNodes = function() {
