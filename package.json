@@ -1,12 +1,13 @@
 {
   "name": "deepforge",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A graphical interface for rapid prototyping of neural networks",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "start-dev": "NODE_ENV=dev node app.js",
-    "test": "node ./node_modules/mocha/bin/mocha --recursive test"
+    "test": "node ./node_modules/mocha/bin/mocha --recursive test",
+    "worker": "PYTHONPATH=$PYTHONPATH node ./bin/start-worker.js"
   },
   "keywords": [
     "webgme",

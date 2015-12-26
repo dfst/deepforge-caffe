@@ -6,3 +6,5 @@ blob-local-storage/
 .DS_Store
 .sass-cache
 *.nedb
+
+*config.json
