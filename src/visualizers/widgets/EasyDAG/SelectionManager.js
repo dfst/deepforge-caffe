@@ -5,7 +5,8 @@ define(['d3'], function() {
         DOTTED_COLOR = '#0099ff',
         BUTTON_SIZE = 20,
         BUTTON_COLOR = '#aeaeae',
-        BUTTON_COLOR_INACTIVE = '#333333';  // TODO: on mouse over
+        BUTTON_COLOR_INACTIVE = '#333333',  // TODO: on mouse over
+        nop = function(){};
 
     var SelectionManager = function(widget) {
         this._widget = widget;  // This is used for the action callbacks
@@ -15,6 +16,7 @@ define(['d3'], function() {
             .attr('class', 'selection-container');
         this.$selection = null;
         this._selectedItem = null;
+
         this.initActions();
     };
 
@@ -26,6 +28,56 @@ define(['d3'], function() {
                 this.deselect();
             },
             move: this._widget.showMoves.bind(this._widget)
+        };
+
+        // Logic for drawing the buttons
+        this.BUTTONS = {
+            remove: (container, x1, x2, y1, y2) => {
+                var ratio = 0.70,
+                    width = x2-x1,
+                    height = y2-y1,
+                    color = '#404040';
+
+                container.append('line')
+                    .attr('x1', x1 + (width * ratio))
+                    .attr('x2', x2 - (width * ratio))
+                    .attr('y1', y1 + (height * ratio))
+                    .attr('y2', y2 - (height * ratio))
+                    .attr('stroke-width', 2)
+                    .attr('stroke', color);
+
+                container.append('line')
+                    .attr('x1', x2 - (width * ratio))
+                    .attr('x2', x1 + (width * ratio))
+                    .attr('y1', y1 + (height * ratio))
+                    .attr('y2', y2 - (height * ratio))
+                    .attr('stroke-width', 2)
+                    .attr('stroke', color);
+            },
+            add: (container, x1, x2, y1, y2) => {
+                var ratio = 0.75,
+                    width = x2-x1,
+                    height = y2-y1,
+                    cx = (x1 + x2)/2,
+                    cy = (y1 + y2)/2,
+                    color = '#404040';
+
+                container.append('line')
+                    .attr('x1', cx)
+                    .attr('x2', cx)
+                    .attr('y1', y1 + (height * ratio))
+                    .attr('y2', y2 - (height * ratio))
+                    .attr('stroke-width', 2)
+                    .attr('stroke', color);
+
+                container.append('line')
+                    .attr('x1', x2 - (width * ratio))
+                    .attr('x2', x1 + (width * ratio))
+                    .attr('y1', cy)
+                    .attr('y2', cy)
+                    .attr('stroke-width', 2)
+                    .attr('stroke', color);
+            }
         };
     };
 
@@ -106,16 +158,21 @@ define(['d3'], function() {
         var button,
             color = inactive ? BUTTON_COLOR_INACTIVE : BUTTON_COLOR,  // FIXME: This would be better as css
             x = cx - BUTTON_SIZE/2,
-            y = cy - BUTTON_SIZE/2;
+            y = cy - BUTTON_SIZE/2,
+            drawFn = this.BUTTONS[action] || nop;
 
         button = this.$selection
-            .append('rect')
+            .append('g')
+            .attr('class', 'buttons action ' + action);
+
+        button.append('rect')
             .attr('x', x)
             .attr('y', y)
             .attr('width', BUTTON_SIZE)
             .attr('height', BUTTON_SIZE)
-            .attr('class', 'buttons action ' + action)
             .attr('fill', color);
+
+        drawFn(button, x, x+BUTTON_SIZE, y, y+BUTTON_SIZE);
 
         if (!inactive) {
             button.on('click', this._onBtnPressed.bind(this, action))
