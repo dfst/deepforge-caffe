@@ -25,5 +25,9 @@ define([
     // FIXME: ForgeFlow is using EasyDAG's decorators
     _.extend(ForgeFlowWidget.prototype, EasyDAGWidget.prototype);
 
+    ForgeFlowWidget.prototype._getAddSuccessorTitle = function(item) {
+        return 'Select layer to add after ' + item.desc.baseName;
+    };
+
     return ForgeFlowWidget;
 });

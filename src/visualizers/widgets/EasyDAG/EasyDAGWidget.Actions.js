@@ -37,7 +37,7 @@ define([
         if (successorPairs.length > 1) {
             // Create the modal view with all possible subsequent nodes
             var dialog = new AddNodeDialog(),
-                title = `Select node to create after "#{item.name.toUpperCase()}"`;
+                title = this._getAddSuccessorTitle(item);
 
             dialog.show(title, successorPairs);
             dialog.onSelect = pair => {
@@ -48,6 +48,10 @@ define([
         } else {
             this.createConnectedNode(item.id, successor.conn.id, successor.node.id);
         }
+    };
+
+    EasyDAGWidgetActions.prototype._getAddSuccessorTitle = function(item) {
+        return 'Select node to create after "' + item.name + '"';
     };
 
     // Move the given item to another item
