@@ -78,6 +78,9 @@ define([
             .append('svg')
 
         this.$svg = this._$svg.append('g');
+        this.$connContainer = this.$svg.append('g')
+            .attr('id', 'connection-container');
+
 
         this.$el[0].style.position = 'absolute';
         this._$svg.style('position', 'relative');
@@ -144,7 +147,7 @@ define([
     };
 
     EasyDAGWidget.prototype.addConnection = function (desc) {
-        var conn = new Connection(this.$svg, desc);
+        var conn = new Connection(this.$connContainer, desc);
         this.graph.setEdge(desc.src, desc.dst, conn);
 
         this.connections[desc.id] = conn;

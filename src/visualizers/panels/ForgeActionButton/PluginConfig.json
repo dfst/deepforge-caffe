@@ -1,0 +1,17 @@
+{
+    "CaffeGenerator": {
+        "icon": "description",
+        "priority": -1
+    },
+    "CaffeTrainer": {
+        "icon": "play_arrow",
+        "priority": 1
+    },
+    "NetworkImporter": {
+        "icon": "import_export",
+        "priority": -1
+    },
+    "UploadData": {
+        "icon": "import_export"
+    }
+}

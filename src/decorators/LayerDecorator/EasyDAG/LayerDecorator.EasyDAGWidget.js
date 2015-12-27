@@ -51,8 +51,7 @@ define([
         DecoratorBase.call(this, options);
         this.initialize();
         this.condense();
-        this.logger.debug('LayerDecorator ctor');
-
+        this.logger.debug('LayerDecorator ctor'); 
     };
 
     _.extend(LayerDecorator.prototype, DecoratorBase.prototype);

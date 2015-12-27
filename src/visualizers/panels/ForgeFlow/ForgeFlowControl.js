@@ -38,5 +38,10 @@ define([
         return desc;
     };
 
+    ForgeFlowControl.prototype.onAddItem = function (nodeId) {
+        // Create a unique id for the layer
+        this._client.setAttributes(nodeId, 'name', `layer_${new Date().getTime()}`);
+    };
+
     return ForgeFlowControl;
 });

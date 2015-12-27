@@ -19,8 +19,8 @@
       "DEBUG_ONLY": false
     },
     {
-      "id": "PluginButton",
-      "panel": "PluginButton/PluginButton",
+      "id": "ForgeActionButton",
+      "panel": "ForgeActionButton/ForgeActionButton",
       "container": "float",
       "DEBUG_ONLY": false
     }

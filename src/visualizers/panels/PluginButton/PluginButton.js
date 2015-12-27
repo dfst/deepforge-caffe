@@ -6,8 +6,7 @@ define([
     'js/Constants',
     'js/RegistryKeys',
     'js/PanelBase/PanelBase',
-    'js/Dialogs/PluginResults/PluginResultsDialog',
-    'text!./PluginConfig.json',
+    './PluginButton.Plugins',
     'text!./templates/PluginButton.html.ejs',
     'text!./templates/PluginAnchor.html.ejs',
     'text!./templates/NoPlugins.html',
@@ -25,8 +24,7 @@ define([
     CONSTANTS,
     REGISTRY_KEYS,
     PanelBase,
-    PluginResultsDialog,
-    PluginIcons,
+    ActionBtnPlugins,
     PluginBtnTemplateText,
     PluginTemplateText,
     NoPluginHtml,
@@ -42,23 +40,33 @@ define([
     var PluginButton,
         PluginTemplate = _.template(PluginTemplateText),
         PluginBtnTemplate = _.template(PluginBtnTemplateText),
-        RESULTS_NAME = 'Results',
-        TERRITORY_PATTERN = {};
+        DEFAULT_ICON = 'play_arrow',
+        DEFAULT_STYLE = {
+            priority: 0
+        };
 
-    TERRITORY_PATTERN[CONSTANTS.PROJECT_ROOT_ID] = {children: 0};
-
+    // I need to extend this so I can support custom actions that do not
+    // use a plugin.
+    // TODO
+    //
+    // The button needs to have an action name and function. Plugins will have // a stock function to use (results will also be refactored).
+    //
+    // TODO:
+    //  + Refactor the actions to lookup and call a function
+    //  + Where should I put the actions?
     PluginButton = function (layoutManager, params) {
         var options = {};
 
         //initialize UI
         PanelBase.call(this);
         this.client = params.client;
-        this.pluginIconLookup = JSON.parse(PluginIcons);
-        this.results = [];
         this.currentPlugins = [];
         this._validPlugins = [];
-        this.territoryId = null;
 
+        this.buttons = {};  // name -> function
+        this._currentButtons = [];
+
+        ActionBtnPlugins.call(this);
         this._initialize();
 
         //this.logger.debug('ctor finished');
@@ -66,50 +74,30 @@ define([
 
     _.extend(PluginButton.prototype, PanelBase.prototype);
 
-    PluginButton.prototype._initialize = function () {
-        // Add listener for object changed and update the button
-        WebGMEGlobal.State.on('change:' + CONSTANTS.STATE_ACTIVE_OBJECT, this._stateActiveObjectChanged, this);
-        // TODO: I should check to see how this updates when the validPlugins
-        // gets updated. It may require a refresh of the active node currently
+    PluginButton.prototype._needsUpdate = function () {
+        // Check if the buttons have changed
+        var actionNames = Object.keys(this.buttons);
+        return !this._currentButtons.length ||  // No actions
+            actionNames.length !== this._currentButtons.length ||
+            _.difference(actionNames, this._currentButtons).length;
     };
 
-    PluginButton.prototype._stateActiveObjectChanged = function (m, nodeId) {
-        var node = this.client.getNode(nodeId),
-            rawPluginRegistry = node.getRegistry(REGISTRY_KEYS.VALID_PLUGINS) || '';
-
-        // Update the button
-        this._validPlugins = rawPluginRegistry.split(' ')
-            .filter(entry => !!entry);
-        this._update();
-    };
-
-    PluginButton.prototype._getPluginNames = function () {
-        return this._validPlugins;
-    };
-
-    PluginButton.prototype._needsUpdate = function (pluginNames) {
-        return !this.currentPlugins.length ||  // No plugins
-            pluginNames.length !== this.currentPlugins.length ||
-            _.difference(pluginNames, this.currentPlugins).length;
-    };
-
-    PluginButton.prototype._update = function () {
-        var pluginNames = this._getPluginNames();
-        if (this._needsUpdate(pluginNames)) {
-            this._updateButton(pluginNames);
+    PluginButton.prototype.update = function () {
+        if (this._needsUpdate()) {
+            this._updateButton();
         }
     };
 
-    PluginButton.prototype._updateButton = function (pluginNames) {
+    PluginButton.prototype._updateButton = function () {
         // Create the html elements
         var html;
 
-        this.currentPlugins = pluginNames || this._getPluginNames();
+        // Update the html
         html = this._createButtonHtml();
         this.$el.empty();
         this.$el.append(html);
 
-        // Set the onclick for the plugin buttons
+        // Set the onclick for the action buttons
         var anchors = [],
             child,
             listElement;
@@ -136,68 +124,53 @@ define([
             });
         $('.tooltipped').tooltip({delay: 50});
 
-        // TODO: Add results button if there are results to view
+        this._currentButtons = Object.keys(this.buttons);
     };
 
     PluginButton.prototype._createButtonHtml = function () {
-        var defaultIcon = 'play_arrow',
-            icons,
-            plugins = [],
-            pluginNames = this.currentPlugins,
+        var actions = [],
             colors = ['red', 'blue', 'yellow darken-1', 'green'],
-            html;
+            actionNames,
+            html,
+            names,
+            action;
 
-        // Get the plugins
-        icons = pluginNames.map(name => this.pluginIconLookup[name] || defaultIcon);
+        // Get the actions
+        actionNames = Object.keys(this.buttons);
+        names = actionNames
+            .map(name => {
+                return {
+                    name,
+                    priority: this.buttons[name].priority || 0
+                };
+            })
+            .sort((a, b) => a.priority < b.priority)
+            .map(obj => obj.name);
 
         // Create the html for each
-        for (var i = 0; i < pluginNames.length; i++) {
-            plugins.push(PluginTemplate({
-                name: pluginNames[i],
-                icon: icons[i],
-                color: colors[i % colors.length]
-            }));
-        }
-
-        // Add results if applicable
-        if (this.results.length) {
-            plugins.splice(1, 0, PluginTemplate({
-                name: RESULTS_NAME,
-                icon: 'list',
-                color: 'grey'
+        for (var i = 0; i < names.length; i++) {
+            action = this.buttons[names[i]];
+            actions.push(PluginTemplate({
+                name: names[i],
+                icon: action.icon || DEFAULT_ICON,
+                color: action.color || colors[i % colors.length]
             }));
         }
 
         html = NoPluginHtml;
-        if (plugins.length > 0) {
-            html = PluginBtnTemplate({plugins});
+        if (actions.length > 0) {
+            html = PluginBtnTemplate({plugins: actions});
         }
 
         return $(html);
     };
 
     PluginButton.prototype._onButtonClicked = function (name) {
-        if (name === RESULTS_NAME) {  // Display results
-            let dialog = new PluginResultsDialog();
-            dialog.show(this.client, this.results);
-        } else {  // Run plugin
-            this._invokePlugin(name);
-        }
+        // Look up the function and invoke it
+        this.buttons[name].action.call(this);
     };
 
-    PluginButton.prototype._invokePlugin = function (name) {
-        var self = this;
-        if (name) {
-            WebGMEGlobal.InterpreterManager.run(name, null, function(result) {
-                // Create the toast
-                Materialize.toast(result.pluginName + ' execution ' + (result.success ?
-                    'successful' : 'failed') + '.', 5000);
-                // TODO: allow click to view results from the toast
-                self.results.push(result);
-                self._updateButton();
-            });
-        }
-    };
+    _.extend(PluginButton.prototype, ActionBtnPlugins.prototype);
 
     return PluginButton;
 });
