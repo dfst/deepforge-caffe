@@ -10,6 +10,6 @@ define(['../common/CaffeToWebGME', '../common/utils'], function(Layers, Utils) {
         mappings[layer.toLowerCase()] = Utils.omit(completeLayer, omitAttributes);
     });
     // Add the input layer (a sort of pseudo-layer in DeepForge)
-    mappings.input = {name: name};
+    mappings.input = {name: 'name'};
     return mappings;
 });
