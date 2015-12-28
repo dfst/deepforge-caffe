@@ -208,7 +208,7 @@ define([
             .forEach(function(neighbor) {
                 // Create an edge between layer and neighbor
                 edge = self.core.createNode({parent: cnn, 
-                    base: self.META.LayerConnector});
+                    base: self.META.IntermediateConnector});
 
                 self.core.setPointer(edge, 'src', nodeMap[neighbor]);
                 self.core.setPointer(edge, 'dst', nodeMap[layer.name]);
