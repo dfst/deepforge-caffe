@@ -104,11 +104,17 @@ define([
         DAGItem.prototype.saveAttribute = function(attr, value) {
             self.saveAttributeForNode(this.id, attr, value);
         };
+
         DAGItem.prototype.setPointer = function(ptr, nodeId) {
             return self.setPointerForNode(this.id, ptr, nodeId);
         };
+
         DAGItem.prototype.getChildrenOf = function(nodeId) {
             return self.getChildrenOf(nodeId);
+        };
+
+        DAGItem.prototype.getEnumValues = function(attr) {
+            return self.getEnumValues(this.id, attr);
         };
     };
 

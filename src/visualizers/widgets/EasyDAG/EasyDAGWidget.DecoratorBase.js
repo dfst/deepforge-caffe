@@ -23,10 +23,12 @@ define([
     EasyDAGDecoratorBase.prototype.onResize = nop;
     EasyDAGDecoratorBase.prototype.saveAttribute = nop;
     EasyDAGDecoratorBase.prototype.setPointer = nop;
+    EasyDAGDecoratorBase.prototype.getEnumValues = nop;
 
     EasyDAGDecoratorBase.prototype.onSelect = function() {
         this.onResize();
     };
+
     EasyDAGDecoratorBase.prototype.onDeselect = function() {
         this.onResize();
     };

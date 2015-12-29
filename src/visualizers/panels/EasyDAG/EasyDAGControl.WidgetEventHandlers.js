@@ -31,6 +31,11 @@ define([
         this._widget.saveAttributeForNode = this._saveAttributeForNode.bind(this);
         this._widget.setPointerForNode = this._setPointerForNode.bind(this);
         this._widget.getChildrenOf = this._getChildrenOf.bind(this);
+        this._widget.getEnumValues = this._getEnumValues.bind(this);
+    };
+
+    EasyDAGControlEventHandlers.prototype._getEnumValues = function(nodeId, attr) {
+        return this._client.getAttributeSchema(nodeId, attr).enum || null;
     };
 
     EasyDAGControlEventHandlers.prototype._setPointerForNode = function(nodeId, ptr, tgt) {
