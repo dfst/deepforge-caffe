@@ -5,9 +5,11 @@
  */
 
 define([
-    'panels/EasyDAG/EasyDAGControl'
+    'panels/EasyDAG/EasyDAGControl',
+    './NotLoaded'
 ], function (
-    EasyDAGControl
+    EasyDAGControl,
+    NOT_LOADED
 ) {
 
     'use strict';
@@ -26,6 +28,11 @@ define([
             node = this._client.getNode(nodeId),
             dataId,
             data;
+
+        // Fail gracefully if not loaded
+        if (!desc) {
+            return NOT_LOADED;
+        }
 
         // Add 'data' pointer if Input node
         if (desc.baseName && desc.baseName.toLowerCase() === 'input') {
