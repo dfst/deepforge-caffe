@@ -14,7 +14,8 @@ define([
 
     'use strict';
 
-    var ForgeFlowControl;
+    var ForgeFlowControl,
+        ROOT_PATH = '';
 
     ForgeFlowControl = function (options) {
         EasyDAGControl.call(this, options);
@@ -22,6 +23,13 @@ define([
     };
 
     _.extend(ForgeFlowControl.prototype, EasyDAGControl.prototype);
+
+    ForgeFlowControl.prototype.selectedObjectChanged = function (nodeId) {
+        this._widget.currentNodeId = nodeId;
+        // Add the data node to the territory
+        this._selfPatterns[''] = {children: 2};
+        EasyDAGControl.prototype.selectedObjectChanged.call(this, nodeId);
+    };
 
     ForgeFlowControl.prototype._getObjectDescriptor = function (nodeId) {
         var desc = EasyDAGControl.prototype._getObjectDescriptor.call(this, nodeId),
