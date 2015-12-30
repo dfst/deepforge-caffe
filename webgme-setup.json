@@ -135,6 +135,9 @@
       },
       "LossDecorator": {
         "src": "src/decorators/LossDecorator"
+      },
+      "ActivationDecorator": {
+        "src": "src/decorators/ActivationDecorator"
       }
     },
     "addons": {}

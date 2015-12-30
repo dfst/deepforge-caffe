@@ -23,7 +23,7 @@ define([
 
         this.dense = this.dense || {width: 110, height: 50};
         this.size = this.size || {width: 110, height: 150};
-        this.color = this.color || '#80de80';
+        this.color = this.color || '#ff9100';
         this._nameY = 25;
 
         LayerDecorator.call(this, options);

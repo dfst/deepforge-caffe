@@ -30,7 +30,7 @@ define([
         this.attributeFields = {};
         this.setAttributes();
 
-        this.color = this.color || '#ff9800';
+        this.color = this.color || '#9e9e9e';
         // Set width, height values
         if (!this.size) {
             this.size = {
@@ -251,7 +251,7 @@ define([
             dropdown.focus();
             // on select
             dropdown.onblur = function() {
-                if (this.value) {
+                if (this.value !== self._attributes[attr]) {
                     self.saveAttribute(attr, this.value);
                 }
                 container.remove();

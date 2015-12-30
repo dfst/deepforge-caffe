@@ -7,7 +7,7 @@
 
 define([
     'decorators/LayerDecorator/EasyDAG/LayerDecorator.EasyDAGWidget',
-    'css!./ReLUDecorator.EasyDAGWidget.css',
+    'css!./ActivationDecorator.EasyDAGWidget.css',
     'd3'
 ], function (
     LayerDecorator
@@ -15,22 +15,22 @@ define([
 
     'use strict';
 
-    var ReLUDecorator,
-        DECORATOR_ID = 'ReLUDecorator';
+    var ActivationDecorator,
+        DECORATOR_ID = 'ActivationDecorator';
 
-    ReLUDecorator = function (options) {
+    ActivationDecorator = function (options) {
         this.dense = this.dense || {width: 80, height: 40};
         this.size = this.size || {width: 120, height: 150};
-        this.color = this.color || '#ba68c8';
+        this.color = this.color || '#ffb74d';
 
         LayerDecorator.call(this, options);
 
-        this.logger.debug('ReLUDecorator ctor');
+        this.logger.debug('ActivationDecorator ctor');
     };
 
-    _.extend(ReLUDecorator.prototype, LayerDecorator.prototype);
+    _.extend(ActivationDecorator.prototype, LayerDecorator.prototype);
 
-    ReLUDecorator.prototype.condense = function() {
+    ActivationDecorator.prototype.condense = function() {
         var path,
             rx = this.dense.width/2,
             ry = this.dense.height/2;
@@ -60,5 +60,5 @@ define([
         this.onResize();
     };
 
-    return ReLUDecorator;
+    return ActivationDecorator;
 });
