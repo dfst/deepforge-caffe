@@ -89,58 +89,63 @@ define([
             rightCol,
             y = 5;
 
-        // Get the height from the number of attributes
-        height = y + this.dense.height + textHeight*attrNames.length;
+        // Only expand if the node has attributes to show
+        if (attrNames.length > 0) {
 
-        path = [
-            `M${-rx},0`,
-            `l ${this.size.width} 0`,
-            `l 0 ${height}`,
-            `l -${this.size.width} 0`,
-            `l 0 -${height}`
-        ].join(' ');
+            // Get the height from the number of attributes
+            height = y + this.dense.height + textHeight*attrNames.length;
 
-        this.$body
-            .attr('d', path);
+            path = [
+                `M${-rx},0`,
+                `l ${this.size.width} 0`,
+                `l 0 ${height}`,
+                `l -${this.size.width} 0`,
+                `l 0 -${height}`
+            ].join(' ');
 
-        // Shift name down
-        this.$name.attr('y', '20');
+            this.$body
+                .attr('d', path);
 
-        // Add the attribute fields
-        y += initialY;
-        leftCol = -rx + attributeMargin;
-        rightCol = rx - attributeMargin;
-        this.$attributes.remove();
-        this.$attributes = this.$el.append('g')
-            .attr('fill', '#222222');
-        for (var i = attrNames.length; i--;) {
-            // Create two text boxes (2nd is editable)
-            y += textHeight;
-            displayName = this._attrToDisplayName[attrNames[i]];
-            // Attribute name
-            this.$attributes.append('text')
-                .attr('y', y)
-                .attr('x', leftCol)
-                .attr('font-style', 'italic')  // FIXME: move this to css
-                .attr('class', 'attr-title')
-                .attr('text-anchor', 'start')
-                .text(`${displayName}: `);
+            // Shift name down
+            this.$name.attr('y', '20');
 
-            // Attribute value
-            this.attributeFields[attrNames[i]] = this.$attributes.append('text')
-                .attr('y', y)
-                .attr('x', rightCol)
-                .attr('text-anchor', 'end')  // FIXME: move this to css
-                .text(`${this._attributes[attrNames[i]]}`)
-                .on('click', this.editAttribute.bind(this, attrNames[i], rightCol, y))
+            // Add the attribute fields
+            y += initialY;
+            leftCol = -rx + attributeMargin;
+            rightCol = rx - attributeMargin;
+            this.$attributes.remove();
+            this.$attributes = this.$el.append('g')
+                .attr('fill', '#222222');
+            for (var i = attrNames.length; i--;) {
+                // Create two text boxes (2nd is editable)
+                y += textHeight;
+                displayName = this._attrToDisplayName[attrNames[i]];
+                // Attribute name
+                this.$attributes.append('text')
+                    .attr('y', y)
+                    .attr('x', leftCol)
+                    .attr('font-style', 'italic')  // FIXME: move this to css
+                    .attr('class', 'attr-title')
+                    .attr('text-anchor', 'start')
+                    .text(`${displayName}: `);
+
+                // Attribute value
+                this.attributeFields[attrNames[i]] = this.$attributes.append('text')
+                    .attr('y', y)
+                    .attr('x', rightCol)
+                    .attr('text-anchor', 'end')  // FIXME: move this to css
+                    .text(`${this._attributes[attrNames[i]]}`)
+                    .on('click', this.editAttribute.bind(this, attrNames[i], rightCol, y))
+            }
+
+            // Update width, height
+            this.height = height;
+            this.width = this.size.width;
+            this.expanded = true;
+            this.$el
+                .attr('transform', `translate(${this.width/2}, 0)`);
         }
 
-        // Update width, height
-        this.height = height;
-        this.width = this.size.width;
-        this.expanded = true;
-        this.$el
-            .attr('transform', `translate(${this.width/2}, 0)`);
         this.onResize();
     };
 
