@@ -49,6 +49,11 @@ define([
             .text(output);
     };
 
+    InnerProductDecorator.prototype.expand = function() {
+        LayerDecorator.prototype.expand.call(this);
+        this.$subtitle.text('');
+    };
+
 
     /*********************** OVERRIDE DiagramDesignerWidgetDecoratorBase MEMBERS **************************/
 
