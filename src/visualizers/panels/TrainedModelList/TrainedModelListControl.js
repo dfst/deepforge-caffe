@@ -16,7 +16,8 @@ define([
 
     'use strict';
 
-    var TrainedModelListControl;
+    var TrainedModelListControl,
+        ROOT_PATH = '';
 
     TrainedModelListControl = function (options) {
 
@@ -60,14 +61,17 @@ define([
         // Remove current territory patterns
         if (self._currentNodeId) {
             self._client.removeUI(self._territoryId);
+            delete self._selfPatterns[self._currentNodeId];
         }
 
         self._currentNodeId = nodeId;
+        self._widget.currentNode = nodeId;
         self._currentNodeParentId = undefined;
 
         if (self._currentNodeId || self._currentNodeId === CONSTANTS.PROJECT_ROOT_ID) {
             // Put new node's info into territory rules
             self._selfPatterns = {};
+            self._selfPatterns[ROOT_PATH] = {children: 1};
             self._selfPatterns[nodeId] = {children: 0};  // Territory "rule"
 
             self._widget.setTitle(desc.name.toUpperCase());
@@ -102,6 +106,7 @@ define([
                 id: node.getId(),
                 name: node.getAttribute(nodePropertyNames.Attributes.name),
                 architecture: node.getAttribute('arch_name'),
+                parentId: node.getParentId(),
                 data: node.getAttribute('data_name')
             };
 

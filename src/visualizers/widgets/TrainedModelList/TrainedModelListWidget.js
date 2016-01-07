@@ -25,6 +25,7 @@ define([
         this.$el = container;
 
         this.nodes = {};
+        this.currentNode = null;
         this._initialize();
 
         this._logger.debug('ctor finished');
@@ -47,11 +48,10 @@ define([
 
     // Adding/Removing/Updating items
     TrainedModelListWidget.prototype.addNode = function (desc) {
-        if (desc) {
+        if (desc && desc.parentId === this.currentNode) {
             var node = new ModelItem(this.$list, desc);
             this.nodes[desc.id] = node;
-            node.$delete.on('click', (event) => {
-                this.onModelDeleteClicked(desc.id);
+            node.$delete.on('click', (event) => { this.onModelDeleteClicked(desc.id);
                 event.stopPropagation();
                 event.preventDefault();
             });
@@ -65,12 +65,14 @@ define([
 
     TrainedModelListWidget.prototype.removeNode = function (gmeId) {
         var node = this.nodes[gmeId];
-        node.remove();
-        delete this.nodes[gmeId];
+        if (node) {
+            node.remove();
+            delete this.nodes[gmeId];
+        }
     };
 
     TrainedModelListWidget.prototype.updateNode = function (desc) {
-        if (desc) {
+        if (desc && desc.parentId === this.currentNode) {
             this.nodes[desc.id].update(desc);
         }
     };
