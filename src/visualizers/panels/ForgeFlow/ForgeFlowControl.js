@@ -27,7 +27,7 @@ define([
     ForgeFlowControl.prototype.selectedObjectChanged = function (nodeId) {
         this._widget.currentNodeId = nodeId;
         // Add the data node to the territory
-        this._selfPatterns[''] = {children: 2};
+        this._selfPatterns[ROOT_PATH] = {children: 2};
         EasyDAGControl.prototype.selectedObjectChanged.call(this, nodeId);
     };
 
