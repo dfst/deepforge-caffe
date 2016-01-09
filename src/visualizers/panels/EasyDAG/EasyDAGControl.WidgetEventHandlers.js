@@ -25,13 +25,15 @@ define([
         this._widget.createConnectedNode = this._createConnectedNode.bind(this);
         this._widget.createNode = this._createNode.bind(this);
         this._widget.removeSubtreeAt = this._removeSubtreeAt.bind(this);
+        this._widget.isValidTerminalNode = this._isValidTerminalNode.bind(this);
 
         // Decorator callbacks
-        // Editing attributes
-        this._widget.saveAttributeForNode = this._saveAttributeForNode.bind(this);
         this._widget.setPointerForNode = this._setPointerForNode.bind(this);
         this._widget.getChildrenOf = this._getChildrenOf.bind(this);
         this._widget.getEnumValues = this._getEnumValues.bind(this);
+
+        // Editing attributes
+        this._widget.saveAttributeForNode = this._saveAttributeForNode.bind(this);
     };
 
     EasyDAGControlEventHandlers.prototype._getEnumValues = function(nodeId, attr) {
@@ -297,7 +299,12 @@ define([
         connIds.push(nodeId);
         return connIds
             .concat(dstIds.map(getSubtree)
-                .reduce((l1, l2) => l1.concat(l2), []));
+                .reduce((l1, l2) => l1.concat(l2)));
+    };
+
+    EasyDAGControlEventHandlers.prototype._isValidTerminalNode = function(nodeId) {
+        // Check if the node can have outgoing connections
+        return this._getValidSuccessorNodes(nodeId).length === 0;
     };
 
     return EasyDAGControlEventHandlers;

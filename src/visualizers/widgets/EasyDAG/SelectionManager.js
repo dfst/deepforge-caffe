@@ -1,4 +1,9 @@
-define(['d3'], function() {
+define([
+    './Buttons',
+    'd3'
+], function(
+    Buttons
+) {
     'use strict';
     
     var MARGIN = 10,
@@ -15,7 +20,7 @@ define(['d3'], function() {
             .append('g')
             .attr('class', 'selection-container');
         this.$selection = null;
-        this._selectedItem = null;
+        this.selectedItem = null;
 
         this.initActions();
     };
@@ -85,17 +90,17 @@ define(['d3'], function() {
         var x,
             y;
 
-        if (item !== this._selectedItem) {
+        if (item !== this.selectedItem) {
             this.deselect();
-            this._selectedItem = item;
+            this.selectedItem = item;
             item.onSelect();
         }
     };
 
     SelectionManager.prototype.deselect = function() {
-        if (this._selectedItem) {
-            this._selectedItem.onDeselect();
-            this._selectedItem = null;
+        if (this.selectedItem) {
+            this.selectedItem.onDeselect();
+            this.selectedItem = null;
         }
         this._deselect();
     };
@@ -109,7 +114,7 @@ define(['d3'], function() {
 
     // Private
     SelectionManager.prototype.redraw = function() {
-        var item = this._selectedItem,
+        var item = this.selectedItem,
             left,
             top,
             width,
@@ -142,16 +147,43 @@ define(['d3'], function() {
 
     SelectionManager.prototype._createActionButtons = function(width, height) {
         // Check if the selected item can have successors
-        var successorNodes = this._widget.getValidSuccessorNodes(this._selectedItem.id);
-        this._createActionButton('add', width/2, height, successorNodes.length === 0);
+        var successorNodes,
+            cx = width/2,
+            btn;
+
+        successorNodes = this._widget.getValidSuccessorNodes(this.selectedItem.id);
+
+        btn = new Buttons.Add({
+            context: this._widget,
+            $pEl: this.$selection,
+            item: this.selectedItem,
+            x: cx,
+            y: height,
+            disabled: successorNodes.length === 0
+        });
+        //this._createActionButton('add', width/2, height, successorNodes.length === 0);
 
         // Remove button
-        this._createActionButton('remove', width/2, 0);
+        btn = new Buttons.Delete({
+            context: this._widget,
+            $pEl: this.$selection,
+            item: this.selectedItem,
+            x: cx,
+            y: 0
+        });
+        //this._createActionButton('remove', width/2, 0);
 
         // Move button
         // TODO: Add this later
         //this._createActionButton('move', width, 0);
 
+    };
+
+    SelectionManager.prototype.isSelected = function(id) {
+        if (this.selectedItem) {
+            return this.selectedItem.id === id;
+        }
+        return false;
     };
 
     SelectionManager.prototype._createActionButton = function(action, cx, cy, inactive) {
@@ -184,7 +216,7 @@ define(['d3'], function() {
     SelectionManager.prototype._onBtnPressed = function(action) {
         d3.event.stopPropagation();
         d3.event.preventDefault();
-        this.ACTIONS[action].call(this, this._selectedItem);
+        this.ACTIONS[action].call(this, this.selectedItem);
     };
 
     return SelectionManager;

@@ -58,6 +58,7 @@ define([
         }
 
         this.selectionManager.redraw();
+        this.updateCreateButtons();
         this.updateContainerWidth();
         this.updateEmptyMsg();
 
@@ -94,13 +95,14 @@ define([
     EasyDAGWidgetRefresher.prototype._getMaxAlongAxis = function (axis) {
         var self = this,
             axisSizeName = axis === 'x' ? 'width' : 'height',
+            MARGIN = 25,
             nodes;
 
         nodes = this.graph.nodes().map(function(id) {
             return self.graph.node(id);
         });
         return Math.max.apply(null, nodes.map(function(node) {
-            return node[axis] + node[axisSizeName];
+            return node[axis] + node[axisSizeName] + MARGIN;
         }));
     };
 

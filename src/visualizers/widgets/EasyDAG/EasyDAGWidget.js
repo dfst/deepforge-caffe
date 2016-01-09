@@ -156,15 +156,24 @@ define([
 
             this.items[desc.id] = item;
             this.graph.setNode(item.id, item);
-            this._empty = false;
             this.itemCount++;
+            this._empty = false;
+            // TODO: Move this to EasyDAGWidget.Items onNodeAdded
+            if (!this.successors[desc.id]) {
+                this.successors[desc.id] = [];
+            }
+            this.refreshUI();
         }
-        this.refreshUI();
     };
 
     EasyDAGWidget.prototype.addConnection = function (desc) {
         var conn = new Connection(this.$connContainer, desc);
         this.graph.setEdge(desc.src, desc.dst, conn);
+
+        if (!this.successors[desc.src]) {
+            this.successors[desc.src] = [];
+        }
+        this.successors[desc.src].push(desc.dst);
 
         this.connections[desc.id] = conn;
         this.itemCount++;
@@ -184,6 +193,7 @@ define([
     EasyDAGWidget.prototype._removeNode = function (gmeId) {
         var desc = this.items[gmeId];
         delete this.items[gmeId];
+        delete this.successors[gmeId];
         this.refreshUI();
     };
 
@@ -191,6 +201,10 @@ define([
         // Delete the subtree rooted at the dst node
         var conn = this.connections[gmeId];
         this.graph.removeEdge(conn.src, conn.dst);
+
+        // Update the successors list
+        var k = this.successors[conn.src].indexOf(conn.dst);
+        this.successors[conn.src].splice(k, 1);
 
         // FIXME: Move this to the refresh mixin
         this.connections[gmeId].remove();
@@ -208,15 +222,17 @@ define([
 
     EasyDAGWidget.prototype.updateConnection = function (desc) {
         // Change the tree structure
-        //var oldSrc = this.graph.edge(desc.id).src,
-            //oldDst = this.graph.edge(desc.id).dst;
-        //if (oldSrc !== desc.src || oldDst !== desc.dst) {
-            //// Remove a connection from oldSrc to oldDst
-            //// TODO
+        var oldSrc = this.connections[desc.id].src,
+            oldDst = this.connections[desc.id].dst;
+        if (oldSrc !== desc.src || oldDst !== desc.dst) {
+            // Remove a connection from oldSrc to oldDst
+            // TODO
             //this.addConnection(desc);
-        //}
-        assert(this.graph.nodes().indexOf('undefined') === -1);
-        this.refreshUI();
+            console.warn('Connection updates are not yet supported (', desc, ')');
+            assert(this.graph.nodes().indexOf('undefined') === -1);
+            this.refreshUI();
+        }
+        // FIXME
     };
 
     /* * * * * * * * Visualizer life cycle callbacks * * * * * * * */
