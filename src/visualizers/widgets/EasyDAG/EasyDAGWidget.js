@@ -81,6 +81,16 @@ define([
         this.$connContainer = this.$svg.append('g')
             .attr('id', 'connection-container');
 
+        // Connection markers
+        this._$svg.append("defs").append("marker")
+            .attr("id", "arrowhead")
+            .attr("refX", 5.25)
+            .attr("refY", 2)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
+            .append("path")
+                    .attr("d", "M 0,0 V 4 L6,2 Z");
 
         this.$el[0].style.position = 'absolute';
         this._$svg.style('position', 'relative');
@@ -104,11 +114,17 @@ define([
         DAGItem.prototype.saveAttribute = function(attr, value) {
             self.saveAttributeForNode(this.id, attr, value);
         };
+
         DAGItem.prototype.setPointer = function(ptr, nodeId) {
             return self.setPointerForNode(this.id, ptr, nodeId);
         };
+
         DAGItem.prototype.getChildrenOf = function(nodeId) {
             return self.getChildrenOf(nodeId);
+        };
+
+        DAGItem.prototype.getEnumValues = function(attr) {
+            return self.getEnumValues(this.id, attr);
         };
     };
 

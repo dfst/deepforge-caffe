@@ -14,6 +14,7 @@ define([], function() {
     };
 
     return convertKeysToLowerCase({
-        ReLU: true
+        ReLU: true,
+        Dropout: true
     });
 });

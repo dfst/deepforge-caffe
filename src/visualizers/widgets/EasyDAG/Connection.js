@@ -5,17 +5,17 @@ define(['d3'], function() {
         .y(d => d.y)
         .interpolate('linear');
 
-    var Connection = function(parentEl, desc) {
+    var Connection = function(pEl, desc) {
         this.desc = desc;
         this.id = desc.id;
         this.src = desc.src;
         this.dst = desc.dst;
 
-        this._parentEl = parentEl;
-        this.$el = this._parentEl.append('path')
+        this.$pEl = pEl;
+        this.$el = this.$pEl.append('path')
             .attr('fill', 'white');
 
-        //this._parentEl.append("svg:defs").selectAll("marker")
+        //this.$pEl.append("svg:defs").selectAll("marker")
             //.data(["end"])      // Different link/path types can be defined here
             //.enter().append("svg:marker")    // This section adds in the arrows
             //.attr("id", String)
@@ -34,7 +34,7 @@ define(['d3'], function() {
             .transition()
             .attr('stroke-width', 2)
             .attr('stroke', 'black')
-            .attr('marker-end', 'url(#end)');
+            .attr("marker-end", "url(#arrowhead)");
     };
 
     Connection.prototype.remove = function() {

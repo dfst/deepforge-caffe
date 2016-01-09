@@ -31,6 +31,7 @@ define([
         // Initialize core collections and variables
         this._widget = options.widget;
 
+        this._selfPatterns = {};
         this._currentNodeId = null;
         this._currentNodeParentId = undefined;
 
@@ -52,6 +53,7 @@ define([
         // Remove current territory patterns
         if (self._currentNodeId) {
             self._client.removeUI(self._territoryId);
+            delete self._selfPatterns[self._currentNodeId];
         }
 
         self._currentNodeId = nodeId;
@@ -59,7 +61,6 @@ define([
 
         if (self._currentNodeId || self._currentNodeId === CONSTANTS.PROJECT_ROOT_ID) {
             // Put new node's info into territory rules
-            self._selfPatterns = {};
             self._selfPatterns[nodeId] = {children: 0};  // Territory "rule"
 
             self._widget.setTitle(desc.name.toUpperCase());

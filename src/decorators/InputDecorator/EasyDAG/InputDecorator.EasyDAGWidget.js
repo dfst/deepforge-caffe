@@ -224,11 +224,12 @@ define([
     };
 
     InputDecorator.prototype.renderWithData = function() {
+        var dataColor = '#00e676';
         this.$body
             .transition()
             .attr('stroke-dasharray', null)
-            .style('fill', '#ffeb3b')
-            .style('stroke', '#ffeb3b');
+            .style('fill', dataColor)
+            .style('stroke', dataColor);
 
         this.$name
             .attr('text-anchor', 'middle')

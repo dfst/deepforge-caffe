@@ -5,7 +5,7 @@ var config = require('./config.webgme'),
 
 // Overwrite options as needed
 config.server.port = 8080;
-config.mongo.uri = 'mongodb://127.0.0.1:27017/cnn-creator';
+config.mongo.uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/cnn-creator';
 
 // Default Project
 config.client.defaultConnectionRouter = 'basic';

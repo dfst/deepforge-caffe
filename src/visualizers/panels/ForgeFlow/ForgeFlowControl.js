@@ -5,14 +5,17 @@
  */
 
 define([
-    'panels/EasyDAG/EasyDAGControl'
+    'panels/EasyDAG/EasyDAGControl',
+    './NotLoaded'
 ], function (
-    EasyDAGControl
+    EasyDAGControl,
+    NOT_LOADED
 ) {
 
     'use strict';
 
-    var ForgeFlowControl;
+    var ForgeFlowControl,
+        ROOT_PATH = '';
 
     ForgeFlowControl = function (options) {
         EasyDAGControl.call(this, options);
@@ -21,11 +24,23 @@ define([
 
     _.extend(ForgeFlowControl.prototype, EasyDAGControl.prototype);
 
+    ForgeFlowControl.prototype.selectedObjectChanged = function (nodeId) {
+        this._widget.currentNodeId = nodeId;
+        // Add the data node to the territory
+        this._selfPatterns[ROOT_PATH] = {children: 2};
+        EasyDAGControl.prototype.selectedObjectChanged.call(this, nodeId);
+    };
+
     ForgeFlowControl.prototype._getObjectDescriptor = function (nodeId) {
         var desc = EasyDAGControl.prototype._getObjectDescriptor.call(this, nodeId),
             node = this._client.getNode(nodeId),
             dataId,
             data;
+
+        // Fail gracefully if not loaded
+        if (!desc) {
+            return NOT_LOADED;
+        }
 
         // Add 'data' pointer if Input node
         if (desc.baseName && desc.baseName.toLowerCase() === 'input') {

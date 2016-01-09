@@ -19,6 +19,7 @@ define([
     ForgeFlowWidget = function (logger, container) {
         EasyDAGWidget.call(this, logger, container);
         this.$el.addClass(WIDGET_CLASS);
+        this.currentNodeId = null;
         this._logger.debug('ctor finished');
     };
 
@@ -27,6 +28,24 @@ define([
 
     ForgeFlowWidget.prototype._getAddSuccessorTitle = function(item) {
         return 'Select layer to add after ' + item.desc.baseName;
+    };
+
+    ForgeFlowWidget.prototype.addNode = function(desc) {
+        if (desc.parentId === this.currentNodeId) {
+            EasyDAGWidget.prototype.addNode.call(this, desc);
+        }
+    };
+
+    ForgeFlowWidget.prototype.updateNode = function(desc) {
+        if (desc.parentId === this.currentNodeId) {
+            EasyDAGWidget.prototype.updateNode.call(this, desc);
+        }
+    };
+
+    ForgeFlowWidget.prototype.removeNode = function(id) {
+        if (this.connections[id] || this.items[id]) {
+            EasyDAGWidget.prototype.removeNode.call(this, id);
+        }
     };
 
     return ForgeFlowWidget;

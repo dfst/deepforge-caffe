@@ -2,18 +2,33 @@
 // These are actions defined for specific meta types. They are evaluated from
 // the context of the ForgeActionButton
 define([], function() {
-    var ROOT_ID = '';
+    var ROOT_ID = '',
+        CREATE_MODEL_TXT = 'Create new model';
 
     var openArchFolder = function() {
-        // TODO: The territory needs to be updated before this can be 
-        // used. Otherwise, the 'architectures' dir may not have been loaded
-        // by the browser
         var archDirNode = this.client.getNode(ROOT_ID)
             .getChildrenIds()
             .map(id => this.client.getNode(id))
+            .filter(node => !!node)
             .find(node => node.getAttribute('name') === 'architectures');
 
-         WebGMEGlobal.State.registerActiveObject(archDirNode.getId());
+        if (!archDirNode) {
+           console.error('Could not find the architectures node. Is the ' +
+               'territory configured correctly?');
+           return;
+        }
+
+        WebGMEGlobal.State.registerActiveObject(archDirNode.getId());
+
+        // Unfortunately, the change results in the button changing before the
+        // tooltip is removed. This leaves the tooltip for creating the model
+        // always on so we must manually remove it.
+        var labels = document.getElementsByClassName('material-tooltip');
+        for (var i = labels.length; i--;) {
+            if(labels[i].innerText === CREATE_MODEL_TXT) {
+                labels[i].remove();
+            }
+        }
     };
 
     var createNewArchitecture = function() {
@@ -29,11 +44,11 @@ define([], function() {
 
     return {
         ModelFolder: [
-            //{
-                //name: 'Create new model',
-                //icon: 'playlist_add',
-                //action: openArchFolder
-            //}
+            {
+                name: CREATE_MODEL_TXT,
+                icon: 'playlist_add',
+                action: openArchFolder
+            }
         ],
 
         Folder: [

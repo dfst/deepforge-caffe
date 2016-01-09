@@ -23,6 +23,7 @@ define([
 
         this.$el = this.$container
             .append('g')
+            .attr('id', this.id)
             .attr('class', 'position-offset');
 
         this.decorator = new this.desc.Decorator({
@@ -49,6 +50,10 @@ define([
 
         this.decorator.getChildrenOf = (nodeId) => {
             return this.getChildrenOf(nodeId);
+        };
+
+        this.decorator.getEnumValues = attr => {
+            return this.getEnumValues(attr);
         };
     };
 
