@@ -112,7 +112,7 @@ define([
 
             // Set the status
             if (!node.getAttribute('failed')) {
-                desc.status = node.getAttribute('model') && node.getAttribute('prototxt') ? 
+                desc.status = node.getAttribute('model') && node.getAttribute('template') ? 
                     'FINISHED' : 'TRAINING';
             } else {
                 desc.status = 'FAILED';

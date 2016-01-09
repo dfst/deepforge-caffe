@@ -8,7 +8,10 @@
 define([
     'TemplateCreator/TemplateCreator',
     './CaffeOutputGenerator'
-], function (SimpleNodes, CaffeTemplateCreator) {
+], function (
+    SimpleNodes,
+    CaffeTemplateCreator
+) {
     'use strict';
 
     var CONN_PTRS = ['src', 'dst'];

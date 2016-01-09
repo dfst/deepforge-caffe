@@ -15,6 +15,34 @@ define([
     var DataUtils = function() {
     };
 
+    DataUtils.dataTemplate = [
+        'layer {',
+            'type: "ImageData"',
+            '{{ _.each(_previous_, function(layer) {}}   bottom: "{{= layer.name }}"',
+            '{{ });}}{{ _.each(_next_, function(layer) {}}   top: "{{= layer.name }}"',
+            '{{ });}}    name: "{{= name }}"',
+            'image_data_param {',
+                'source: "{{= source }}"',
+                'batch_size: {{= batch_size }}',
+                'rand_skip: 0',
+                'shuffle: false',
+                'new_height: {{= new_height }}',
+                'new_width: {{= new_width }}',
+            '}',
+        '}'
+    ].join('\n');
+
+    DataUtils.prototype.createPrototxt = function(node, callback) {
+        // Create the prototxt from the node
+        // TODO
+        // We know the name of the data layer as well as jk
+        // TODO
+        var attributes = [],
+            json = {};
+    };
+
+    DataUtils.DataName = 'images.txt';
+
     DataUtils.prototype.prepareLabeledData = function(node, callback) {
         // Retrieve all the images from the blob
         this._retrieveImagesFromBlob(node, callback);
@@ -29,6 +57,7 @@ define([
                 return callback(err);
             }
 
+            this.logger.info('retrieving class images from the blob');
             async.each(classes, (classItem, callback) => {
                 this._addClassImages(classItem, images, callback);
             }, (err) => {
@@ -102,7 +131,7 @@ define([
             }
         }
 
-        files['images.txt'] = classText.join('\n');
+        files[DataUtils.DataName] = classText.join('\n');
         return files;
     };
 

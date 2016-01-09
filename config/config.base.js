@@ -15,6 +15,7 @@ config.client.defaultConnectionRouter = 'basic';
 
 // Plugins
 config.plugin.allowServerExecution = true;
+config.plugin.allowBrowserExecution = true;
 config.seedProjects.defaultProject = 'Caffe';
 config.requirejsPaths['image-size'] = './src/plugins/common/lib/image-size';
 config.requirejsPaths['buffer'] = './src/plugins/common/lib/buffer';

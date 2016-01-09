@@ -24,6 +24,14 @@
       "CreateLabeledData": {
         "src": "src/plugins/CreateLabeledData",
         "test": "test/plugins/CreateLabeledData"
+      },
+      "CaffeTester": {
+        "src": "src/plugins/CaffeTester",
+        "test": "test/plugins/CaffeTester"
+      },
+      "CaffeRunner": {
+        "src": "src/plugins/CaffeRunner",
+        "test": "test/plugins/CaffeRunner"
       }
     },
     "addOns": {},
