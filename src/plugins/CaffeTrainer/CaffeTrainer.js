@@ -32,7 +32,7 @@ define([
             snapshot: 10000000,  // No snapshots -> just the last result!
             snapshotPrefix: 'snapshot_'
         },
-        TEMPLATE_SUFFIX = 'classify.prototxt.ejs';
+        ARCH_SUFFIX = 'network.prototxt';
 
     /**
      * Initializes a new instance of CaffeTrainer.
@@ -167,6 +167,10 @@ define([
                 });
             });
         });
+    };
+
+    CaffeTrainer.prototype.getRunCommand = function(metadata) {
+        return metadata.trainCommand;
     };
 
     // Retrieve the zipped data files from the blob and add them to the executor
@@ -315,7 +319,6 @@ define([
 
             // Set the prototxt template
             self.savePrototxtAlone(files, function(err, hash) {
-                self.core.setAttribute(self.modelNode, 'prototxt', hash);
                 self.save('Created model and started training', callback)
             });
         });
@@ -326,22 +329,31 @@ define([
             'Caffe',
             arch.substring(0, 10),
             data.substring(0, 10)
-        ].join('/');
+        ].join('-');
     };
 
     CaffeTrainer.prototype.savePrototxtAlone = function(files, callback) {
         let names = Object.keys(files),
-            templateName,
-            artifact;
+            templateName = 'templates',
+            archName,
+            artifact,
+            count = 2,
+            onFinish = (err) => {
+                if (--count === 0) {
+                }
+            };
 
         for (var i = names.length; i--;) {
-            if (names[i].indexOf(TEMPLATE_SUFFIX) !== -1) {
-                templateName = names[i];
+            if (names[i].indexOf(ARCH_SUFFIX) !== -1) {
+                archName = names[i];
             }
         }
 
         // Save the prototxt template in the blob and store the hash
-        this.blobClient.putFile(templateName, files[templateName], callback);
+        this.blobClient.putFile(templateName, JSON.stringify(files[templateName]), (err, hash) => {
+            this.core.setAttribute(this.modelNode, 'template', hash);
+            callback(err);
+        });
     };
 
     CaffeTrainer.prototype.getModelsDir = function(callback) {

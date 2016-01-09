@@ -9,11 +9,13 @@ define([
     'plugin/PluginConfig',
     'plugin/PluginBase',
     'executor/ExecutorClient',
+    '../common/Constants',
     'text!./resources/classify.py'
 ], function (
     PluginConfig,
     PluginBase,
     ExecutorClient,
+    Constants,
     CLASSIFY_PY
 ) {
     'use strict';
@@ -54,6 +56,7 @@ define([
 
     CaffeClassifier.prototype.getConfigStructure = function(){
         return [
+            // FIXME: Detect the dimensions of the input
             {  // dims of the input
                 name: 'dims',
                 displayName: 'Input Dimensions',
@@ -63,12 +66,12 @@ define([
                 readOnly: false
             },
             {  // images to classify
-                'name': 'image',  // TODO: add support for multiple images
-                'displayName': 'Image to Classify',
-                'description': '',
-                'value': '',
-                'valueType': 'asset',
-                'readOnly': false
+                name: 'image',  // TODO: add support for multiple images
+                displayName: 'Image to Classify',
+                description: '',
+                value: '',
+                valueType: 'asset',
+                readOnly: false
             }
         ];
     }
@@ -99,24 +102,65 @@ define([
         // Pack all files for executor
         this.createExecutorFiles((err, hash) => {
             if (err) {
-                return callback(err);
+                return callback(err, this.result);
             }
 
+            // Can I do this without downloading and re-uploading the files?
+            // TODO
+
             // Create the executor job
+            this.logger.debug('Created executor files!');
             this.executeJob(hash, callback);
         });
     };
 
+    CaffeClassifier.prototype.MODEL_NAME = 'model.caffemodel';
+    CaffeClassifier.prototype.PROTO_NAME = 'network.prototxt';
+    CaffeClassifier.prototype.IMAGE_NAME = 'image.png';
     CaffeClassifier.prototype.createExecutorFiles = function (callback) {
         var files = {},
-            executorConfig,
-            modelName = 'model.caffemodel',
-            protoName = 'network.prototxt',
-            imageName = 'image.png';
+            executorConfig;
 
-        executorConfig = {
-            cmd: 'python2',  // FIXME
-            args: ['classify.py', protoName, modelName, imageName],
+        // Get the trained model
+        this.getTrainedModel((err, model) => {
+            if (err) {
+                return callback(err, this.result);
+            }
+            files[this.MODEL_NAME] = model;
+
+            this.addExecutionFiles(files, (err) => {
+                var artifact;
+                if (err) {
+                    return callback(err, this.result);
+                }
+
+                executorConfig = this.getExecutorConfig();
+                files['executor_config.json'] = JSON.stringify(executorConfig, null, 2);
+
+                artifact = this.blobClient.createArtifact('classificationFiles');
+                this.logger.debug('Adding files: ' + Object.keys(files)
+                        .map(name => '"' + name + '"').join(','));
+
+                // Add hashes
+                // TODO
+
+                // Add files by content
+                artifact.addFiles(files, (err) => {
+                    if (err) {
+                        return callback(err, this.result);
+                    }
+
+                    this.logger.debug('Added classification files to blob');
+                    artifact.save(callback);
+                });
+            });
+        });
+    };
+
+    CaffeClassifier.prototype.getExecutorConfig = function (callback) {
+        return {
+            cmd: 'python2',
+            args: ['classify.py', this.PROTO_NAME, this.MODEL_NAME, this.IMAGE_NAME],
             resultArtifacts: [
                 {
                     name: 'all',
@@ -128,32 +172,6 @@ define([
                 }
             ]
         };
-
-        // Get the trained model
-        this.getTrainedModel((err, model) => {
-            this.getImage((err, image) => {
-                // Get the classification prototxt template
-                this.createPrototxt((err, prototxt) => {
-                    let artifact;
-
-                    files[modelName] = model;
-                    files[protoName] = prototxt;
-                    files['classify.py'] = CLASSIFY_PY;
-                    files[imageName] = image;  // Add image
-                    files['executor_config.json'] = JSON.stringify(executorConfig, null, 2);
-
-                    artifact = this.blobClient.createArtifact('classificationFiles');
-                    artifact.addFiles(files, (err) => {
-                        if (err) {
-                            return callback(err);
-                        }
-
-                        this.logger.debug('Added classification files to blob');
-                        artifact.save(callback);
-                    });
-                });
-            });
-        });
     };
 
     CaffeClassifier.prototype.getImage = function (callback) {
@@ -162,6 +180,8 @@ define([
         this.blobClient.getObject(imageHash, callback);
     };
 
+    // Should I change this so the models are webgme objects?
+    // TODO
     CaffeClassifier.prototype.getTrainedModel = function (callback) {
         var modelHash = this.core.getAttribute(this.activeNode, 'model');
 
@@ -172,7 +192,7 @@ define([
                 hash;
 
             if (err) {
-                return callback(err);
+                return callback(err, this.result);
             }
 
             models = Object.keys(metadata.content);
@@ -199,8 +219,8 @@ define([
             .shift()[0];
     };
 
-    CaffeClassifier.prototype.createPrototxt = function (callback) {
-        var prototxtHash = this.core.getAttribute(this.activeNode, 'prototxt'),
+    CaffeClassifier.prototype.addExecutionFiles = function (files, callback) {
+        var prototxtHash = this.core.getAttribute(this.activeNode, 'classify'),
             prototxtTemplate,
             prototxt;
 
@@ -211,13 +231,32 @@ define([
 
             prototxtTemplate = String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
             // Populate it with the config settings
-            prototxt = _.template(prototxtTemplate)({
-                dims: this.getCurrentConfig().dims.split(/[^\d]+/g)
-            });
+            prototxt = this.createNetPrototxt(prototxtTemplate);
 
             this.logger.debug('Created the classification protoxt');
-            callback(null, prototxt);
+
+            this.getImage((err, image) => {
+                // Add prototxt and python script to files
+                files[this.IMAGE_NAME] = image;
+                files[this.PROTO_NAME] = prototxt;
+                files['classify.py'] = CLASSIFY_PY;
+                callback(null);
+            });
         });
+    };
+
+    CaffeClassifier.prototype.createNetPrototxt = function (template) {
+        var dataLayer = `input: "${Constants.DATA_LAYER_NAME}"`;
+        dataLayer += _.template([
+            'input_shape {',
+            '{{ _.each(dims, function(dim) { }}',
+            '  dim: {{= dim }}{{ }); }}',
+            '}\n'
+        ].join('\n'))({
+            dims: this.getCurrentConfig().dims.split(/[^\d]+/g)
+        });
+
+        return _.template(prototxtTemplate)({dataLayer});
     };
 
     CaffeClassifier.prototype.executeJob = function(hash, callback) {

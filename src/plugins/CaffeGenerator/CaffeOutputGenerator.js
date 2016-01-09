@@ -1,14 +1,20 @@
 /*globals _,define*/
 
-define(['TemplateCreator/outputs/OutputGenerator',
-        'TemplateCreator/templates/Constants',
-        'underscore',
-        '../common/CaffeInPlaceLayers',
-        './CaffeTemplate'], function(OutputGenerator,
-                                     Constants,
-                                     _,
-                                     InPlaceLayers,
-                                     CaffeTemplate) {
+define([
+    'TemplateCreator/outputs/OutputGenerator',
+    'TemplateCreator/templates/Constants',
+    'underscore',
+    '../common/CaffeInPlaceLayers',
+    '../common/Constants',
+    './CaffeTemplate'
+], function(
+    OutputGenerator,
+    Constants,
+    _,
+    InPlaceLayers,
+    CaffeConstants,
+    CaffeTemplate
+) {
     'use strict';
 
     // Caffe Constants
@@ -38,7 +44,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
             archName = name+'_network.prototxt',
             trainName = name+'_trainer.prototxt',
             testName = name+'_solver.prototxt',
-            classifyName = name+'_classify.prototxt.ejs',
+            templateName = name+'.prototxt.ejs',
             template,
             labelName,
             dataName,
@@ -57,7 +63,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
         dataName = this.updateDataNode(tree);
 
         // Create the architecture file
-        template = _.template(this.template[Constants.ARCH]);
+        template = _.template(this.template[CaffeConstants.ARCH]);
         outputFiles[archName] = template(tree);
         outputFiles[archName] += this.createTemplateFromNodes(tree[Constants.CHILDREN]);
 
@@ -70,16 +76,24 @@ define(['TemplateCreator/outputs/OutputGenerator',
         outputFiles[testName] = template(tree);
 
         // Create the classification prototxt template
-        outputFiles[classifyName] = this.createPrototxtTemplate(tree);
+        outputFiles.templates = {
+            dataName: dataName,
+            labelName: labelName
+        };
+        outputFiles.templates[templateName] = this.createPrototxtTemplate(tree);
 
         // Create the metadata file
         var metadata = {
             type: 'Caffe',
             trainCommand: 'caffe train --solver='+trainName,
-            testCommand: '',
+            testCommand: 'caffe test -model ' + trainName + ' -weights ' +
+                '{{= modelName }} -iterations ' + this.runOptions.testIter +
+                ' ' + (this.runOptions.usingGPU ? '-gpu 0' : ''),
+                // FIXME: Select the gpu to use on the device
             architecture: tree.name,
-            data: dataName
-        };  // Add test cmd FIXME 
+            data: dataName,
+            label: labelName
+        };
         outputFiles.metadata = JSON.stringify(metadata);
 
         return outputFiles;
@@ -89,6 +103,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
         var node;
         // Add the data source and type to data nodes
         // As the children are topo sorted, data nodes should be first
+        // TODO: move this to the common/DataPlugin
         for (var i = tree[Constants.CHILDREN].length; i--;) {
             node = tree[Constants.CHILDREN][i];
             if (node[Constants.BASE].name === 'LabeledData') {
@@ -210,20 +225,14 @@ define(['TemplateCreator/outputs/OutputGenerator',
             data;
 
         // Add the node name
-        template = _.template(this.template[Constants.ARCH]);
+        template = _.template(this.template[CaffeConstants.ARCH]);
         result = template(tree);
 
         // Remove the data layer
         data = tree[Constants.CHILDREN].shift();
-        result += `input: "${data.name}"`;
         
         // Add the input info
-        result += [
-            '\ninput_shape {',
-            '{{ _.each(dims, function(dim) { }}',
-            '  dim: {{= dim }}{{ }); }}',
-            '}\n'
-        ].join('\n');
+        result += '\n{{= dataLayer }}\n'
 
         // Add the rest of the layers
         result += this.createTemplateFromNodes(tree[Constants.CHILDREN]);
