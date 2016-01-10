@@ -299,7 +299,7 @@ define([
         connIds.push(nodeId);
         return connIds
             .concat(dstIds.map(getSubtree)
-                .reduce((l1, l2) => l1.concat(l2)));
+                .reduce((l1, l2) => l1.concat(l2), []));
     };
 
     EasyDAGControlEventHandlers.prototype._isValidTerminalNode = function(nodeId) {
