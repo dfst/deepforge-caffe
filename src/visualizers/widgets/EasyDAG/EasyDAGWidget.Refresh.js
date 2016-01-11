@@ -9,6 +9,7 @@ define([
 
     'use strict';
     
+    var TOP_LEFT_MIN_MARGIN = 20;
     var EasyDAGWidgetRefresher = function() {
     };
 
@@ -76,6 +77,10 @@ define([
                 x: this._getTranslation('x'),
                 y: this._getTranslation('y')
             };
+
+        // Make sure it is shifted at least 20 px in each direction
+        shift.x = Math.max(TOP_LEFT_MIN_MARGIN, shift.x);
+        shift.y = Math.max(TOP_LEFT_MIN_MARGIN, shift.y);
 
         this.$svg
             .attr('transform', `translate(${shift.x},${shift.y})`);
