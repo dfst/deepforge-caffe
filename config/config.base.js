@@ -17,8 +17,6 @@ config.client.defaultConnectionRouter = 'basic';
 config.plugin.allowServerExecution = true;
 config.seedProjects.defaultProject = 'Caffe';
 
-config.visualization.svgDirs = ['src/svgs'];
-
 // Executors
 config.executor.enable = true;
 
