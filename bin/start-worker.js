@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path'),
-    fse = require('fs-extra'),
+    fs = require('fs'),
     spawn = require('child_process').spawn,
     projectConfig = require(__dirname + '/../config'),
     executorSrc = path.join(__dirname, '..', 'node_modules', 'webgme', 'src',
@@ -33,12 +33,12 @@ var createConfigJson = function() {
 
     config[address] = {};
     // TODO: Check if the config already exists
-    fse.writeFile(workerConfigPath, JSON.stringify(config), startExecutor);
+    fs.writeFile(workerConfigPath, JSON.stringify(config), startExecutor);
 };
 
 process.chdir(executorSrc);
 
-fse.mkdir(workerTmp, function() {
+fs.mkdir(workerTmp, function() {
     // npm install in this directory
     var npmInstall = spawn('npm', ['install']);
     npmInstall.stdout.pipe(process.stdout);
