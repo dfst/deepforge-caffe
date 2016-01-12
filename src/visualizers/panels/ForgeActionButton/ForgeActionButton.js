@@ -34,19 +34,20 @@ define([
             node = this.client.getNode(nodeId),
             base = this.client.getNode(node.getMetaTypeId()),
             base,
-            actions;
+            actions,
+            i;
 
         // Get node baseName and look up actions
         baseName = base ? base.getAttribute('name') : 'ROOT';
 
         // Remove old actions
-        for (let i = this._actions.length; i--;) {
+        for (i = this._actions.length; i--;) {
             delete this.buttons[this._actions[i].name];
         }
 
         // Get node name and look up actions
         actions = ACTIONS[baseName] || [];
-        for (let i = actions.length; i--;) {
+        for (i = actions.length; i--;) {
             this.buttons[actions[i].name] = actions[i];
         }
 

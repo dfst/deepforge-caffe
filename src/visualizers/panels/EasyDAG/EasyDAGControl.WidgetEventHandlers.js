@@ -100,7 +100,8 @@ define([
         var allIds = [],
             allConnIds,
             validInitialNodes,
-            dsts;
+            dsts,
+            i;
 
         this._client.getChildrenMeta(this._currentNodeId).items
             // Get all descendents
@@ -113,7 +114,7 @@ define([
         validInitialNodes = {};
         allConnIds = [];
 
-        for (let i = allIds.length; i--;) {
+        for (i = allIds.length; i--;) {
             if (this._client.getNode(allIds[i]).isConnection()) {
                 allConnIds.push(allIds[i]);
             } else {
@@ -123,14 +124,14 @@ define([
 
         // For each connection, get the destination nodes and remove
         // them from the potential initial nodes
-        for (let i = allConnIds.length; i--;) {
+        for (i = allConnIds.length; i--;) {
             dsts = this._client.getPointerMeta(allConnIds[i], CONN_PTR.END).items
                 .map(item => item.id)
                 // Get the descendents
                 .map(id => this._getAllDescendentIds(id))
                 .reduce((prev, curr) => prev.concat(curr));
 
-            for (let j = dsts.length; j--;) {
+            for (var j = dsts.length; j--;) {
                 delete validInitialNodes[dsts[j]];
             }
         }
