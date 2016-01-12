@@ -40,7 +40,7 @@ define([
     };
 
     ActionButtonPlugins.prototype.pluginResultsFn = function () {
-        let dialog = new PluginResultsDialog();
+        var dialog = new PluginResultsDialog();
         dialog.show(this.client, this.results);
     };
 
@@ -69,16 +69,17 @@ define([
     ActionButtonPlugins.prototype._updatePluginBtns = function() {
         var oldPlugins = this._currentPlugins,
             pluginStyle,
-            plugin;
+            plugin,
+            i;
 
         // TODO: This could be optimized
         // Remove the old plugins
-        for (let i = oldPlugins.length; i--;) {
+        for (i = oldPlugins.length; i--;) {
             delete this.buttons[oldPlugins[i]];
         }
 
         // Add the plugins to the buttons list
-        for (let i = this._validPlugins.length; i--;) {
+        for (i = this._validPlugins.length; i--;) {
             plugin = this._validPlugins[i];
             pluginStyle = this._pluginConfig[plugin] || {};
             pluginStyle.action = this.getPluginFn(plugin);

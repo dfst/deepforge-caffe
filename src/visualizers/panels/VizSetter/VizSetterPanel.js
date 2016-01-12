@@ -114,7 +114,7 @@ define([
             callback(this._panels[panelPath]);
         } else {
             require([panelPath], function (PanelClass) {
-                let nodeId = self.currentNode.getId(),
+                var nodeId = self.currentNode.getId(),
                     panel = new PanelClass(self._layoutManager, self._params);
 
                 WebGMEGlobal.State.trigger('change:' + CONSTANTS.STATE_ACTIVE_OBJECT, WebGMEGlobal.State, nodeId);

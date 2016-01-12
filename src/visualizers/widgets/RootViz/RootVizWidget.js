@@ -48,7 +48,7 @@ define([
     };
     RootVizWidget.prototype.addNode = function (desc) {
         if (desc) {
-            let isValid = NODE_WHITELIST[desc.name],
+            var isValid = NODE_WHITELIST[desc.name],
                 htmlId,
                 html;
 

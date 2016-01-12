@@ -23,7 +23,7 @@ define([
         this._dialog = $(this._content);
         container = this._dialog.find('#node-container');
         nodes.forEach((html, i) => {
-            let node = dataNodes[i];
+            var node = dataNodes[i];
             html.onclick = this.onDataClicked.bind(this, node);
             container.append(html);
         });
