@@ -203,8 +203,11 @@ define([
         this.graph.removeEdge(conn.src, conn.dst);
 
         // Update the successors list
-        var k = this.successors[conn.src].indexOf(conn.dst);
-        this.successors[conn.src].splice(k, 1);
+        // (if the src node hasn't already been removed)
+        if (this.successors[conn.src]) {
+            var k = this.successors[conn.src].indexOf(conn.dst);
+            this.successors[conn.src].splice(k, 1);
+        }
 
         // FIXME: Move this to the refresh mixin
         this.connections[gmeId].remove();
