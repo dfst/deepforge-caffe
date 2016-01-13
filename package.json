@@ -1,6 +1,6 @@
 {
   "name": "deepforge",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A graphical interface for rapid prototyping of neural networks",
   "main": "app.js",
   "scripts": {
