@@ -17,6 +17,10 @@ config.client.defaultConnectionRouter = 'basic';
 config.plugin.allowServerExecution = true;
 config.seedProjects.defaultProject = 'Caffe';
 
+// Seeds (removing all WebGME seeds)
+config.seedProjects.basePaths = config.seedProjects.basePaths
+    .filter(path => path.indexOf('webgme') === -1);
+
 // Executors
 config.executor.enable = true;
 
