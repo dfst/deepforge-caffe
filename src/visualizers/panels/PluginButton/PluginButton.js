@@ -153,7 +153,9 @@ define([
             actions.push(PluginTemplate({
                 name: names[i],
                 icon: action.icon || DEFAULT_ICON,
-                color: action.color || colors[i % colors.length]
+                color: action.color || colors[i % colors.length],
+                // Add href if appropriate
+                href: action.href ? action.href.call(this) : null
             }));
         }
 
@@ -167,7 +169,9 @@ define([
 
     PluginButton.prototype._onButtonClicked = function (name) {
         // Look up the function and invoke it
-        this.buttons[name].action.call(this);
+        if (this.buttons[name].action) {
+            this.buttons[name].action.call(this);
+        }
     };
 
     _.extend(PluginButton.prototype, ActionBtnPlugins.prototype);
