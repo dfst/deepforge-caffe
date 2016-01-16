@@ -42,7 +42,29 @@ define([], function() {
         this.client.createChild({parentId, baseId});
     };
 
+    // Add download model button
+    var downloadButton = function() {
+        console.log('Downloading model...');
+        var id = this._currentNodeId,
+            node = this.client.getNode(id),
+            hash = node.getAttribute('model'),
+            url;
+
+        if (hash) {
+            return '/rest/blob/download/' + hash;
+        }
+        return null;
+    };
+
     return {
+        Model: [
+            {
+                name: 'Download model',
+                icon: 'play_for_work',
+                href: downloadButton  // function to create href url
+            }
+        ],
+
         ModelFolder: [
             {
                 name: CREATE_MODEL_TXT,
