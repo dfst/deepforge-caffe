@@ -29,9 +29,20 @@ define([
 
         this._node = options.node;
         this._dataDialog = new DataDialog();
-        // onSelect, set the pointer of this node to the correct value
-        this._dataDialog.onSelect = (dataNode) => {
+        // onLabeledDataSelect, set the pointer of this node to the correct value
+        this._dataDialog.onLabeledDataSelect = (dataNode) => {
             this.setPointer('data', dataNode.id);
+        };
+
+        this._dataDialog.getRawDataNodes = () => {
+            this.setRawDataRoot();
+            return this.getChildrenOf(this.RAW_DATA_ROOT);
+        };
+        this._dataDialog.getChildrenOf = id => {
+            return this.getChildrenOf(id);
+        };
+        this._dataDialog.createLabeledDataNode = (name, classes, size) => {
+            return this.createLabeledDataNode(this.DATA_ROOT, name, classes, size);
         };
 
         this.width = 100;
@@ -85,18 +96,27 @@ define([
     };
 
     InputDecorator.prototype.DATA_ROOT = null;
+    InputDecorator.prototype.RAW_DATA_ROOT = null;
+    InputDecorator.prototype.setRawDataRoot = function() {
+        if (!this.RAW_DATA_ROOT) {
+            InputDecorator.prototype.RAW_DATA_ROOT = this.getPrimaryNode('data');
+        }
+    };
+
     InputDecorator.prototype.setDataRoot = function() {
         if (!this.DATA_ROOT) {
-            var dirs = this.getChildrenOf();
-            for (var i = dirs.length; i--;) {
-                if (dirs[i].name.toLowerCase() === 'data') {
-                    InputDecorator.prototype.DATA_ROOT = dirs[i].id;
-                }
-            }
-            if (!InputDecorator.prototype.DATA_ROOT) {
-                console.warn('Could not find a data folder');
+            InputDecorator.prototype.DATA_ROOT = this.getPrimaryNode('labeled-data');
+        }
+    };
+
+    InputDecorator.prototype.getPrimaryNode = function(name) {
+        var dirs = this.getChildrenOf();
+        for (var i = dirs.length; i--;) {
+            if (dirs[i].name.toLowerCase() === name) {
+                return dirs[i].id;
             }
         }
+        console.warn('Could not find a "' + name + '" folder');
     };
 
     InputDecorator.prototype.updateActionBtn = function() {
@@ -256,6 +276,10 @@ define([
     };
 
     InputDecorator.prototype.DECORATORID = DECORATOR_ID;
+
+    InputDecorator.prototype.createLabeledDataNode = function() {
+        console.warn('createLabeledDataNode not overridden in visualizer');
+    };
 
     return InputDecorator;
 });

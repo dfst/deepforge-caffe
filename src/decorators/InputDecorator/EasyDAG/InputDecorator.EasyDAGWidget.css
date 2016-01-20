@@ -5,3 +5,8 @@
   text-align: center;   
 }
 
+.add-data-dialog .new-entry {
+    margin-left: auto;
+    margin-right: auto;
+}
+

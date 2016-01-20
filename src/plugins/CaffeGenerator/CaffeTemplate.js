@@ -1,5 +1,5 @@
 /*globals define*/
-define(['../common/CaffeToWebGME'], function(Layers) {
+define(['../common/CaffeToWebGME'], function(StandardLayers) {
     'use strict';
     // Every layer has the following:
     //
@@ -113,10 +113,11 @@ define(['../common/CaffeToWebGME'], function(Layers) {
         '{{ });}}';
 
     // Add Layer Specific Parameters from the CaffeToWebGME file
-    var layerTypes = Object.keys(Layers);
+    var Layers = _.clone(StandardLayers),
+        layerTypes;
 
-    // Helper functions
-
+    // Add the layers to the blockMap
+    layerTypes = Object.keys(Layers);
     layerTypes.forEach(function(layerType) {
         // top, bottom, type are handled manually
         var contents = _.omit(Layers[layerType], ['top', 'bottom', 'type']),

@@ -7,9 +7,11 @@
 
 define([
     'widgets/EasyDAG/EasyDAGWidget',
+    './LayerItem',
     'css!./styles/ForgeFlowWidget.css'
 ], function (
-    EasyDAGWidget
+    EasyDAGWidget,
+    LayerItem
 ) {
     'use strict';
 
@@ -26,8 +28,18 @@ define([
     // FIXME: ForgeFlow is using EasyDAG's decorators
     _.extend(ForgeFlowWidget.prototype, EasyDAGWidget.prototype);
 
+    ForgeFlowWidget.prototype.ItemClass = LayerItem;
     ForgeFlowWidget.prototype._getAddSuccessorTitle = function(item) {
         return 'Select layer to add after ' + item.desc.baseName;
+    };
+
+    ForgeFlowWidget.prototype.setupItemCallbacks = function() {
+        var ItemClass = this.ItemClass;
+        EasyDAGWidget.prototype.setupItemCallbacks.call(this);
+
+        ItemClass.prototype.createLabeledDataNode = (parentId, name, classes, size) => {
+            return this.createLabeledDataNode(parentId, name, classes, size);
+        };
     };
 
     ForgeFlowWidget.prototype.addNode = function(desc) {

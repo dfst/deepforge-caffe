@@ -69,6 +69,7 @@ define([
         this._logger.debug('ctor finished');
     };
 
+    EasyDAGWidget.prototype.ItemClass = DAGItem;
     EasyDAGWidget.prototype._initialize = function () {
         var self = this;
 
@@ -108,22 +109,23 @@ define([
     };
 
     EasyDAGWidget.prototype.setupItemCallbacks = function () {
-        var self = this;
+        var self = this,
+            ItemClass = this.ItemClass;
 
-        DAGItem.prototype.onUpdate = this.refreshUI.bind(this);
-        DAGItem.prototype.saveAttribute = function(attr, value) {
+        ItemClass.prototype.onUpdate = this.refreshUI.bind(this);
+        ItemClass.prototype.saveAttribute = function(attr, value) {
             self.saveAttributeForNode(this.id, attr, value);
         };
 
-        DAGItem.prototype.setPointer = function(ptr, nodeId) {
+        ItemClass.prototype.setPointer = function(ptr, nodeId) {
             return self.setPointerForNode(this.id, ptr, nodeId);
         };
 
-        DAGItem.prototype.getChildrenOf = function(nodeId) {
+        ItemClass.prototype.getChildrenOf = function(nodeId) {
             return self.getChildrenOf(nodeId);
         };
 
-        DAGItem.prototype.getEnumValues = function(attr) {
+        ItemClass.prototype.getEnumValues = function(attr) {
             return self.getEnumValues(this.id, attr);
         };
     };
@@ -146,7 +148,7 @@ define([
         var item;
         if (desc) {
             // Record the node info
-            item = new DAGItem(this.$svg, desc);
+            item = new this.ItemClass(this.$svg, desc);
             item.$el
                 .on('click', event => {
                     d3.event.stopPropagation();

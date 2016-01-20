@@ -16,6 +16,8 @@ config.client.defaultConnectionRouter = 'basic';
 // Plugins
 config.plugin.allowServerExecution = true;
 config.seedProjects.defaultProject = 'Caffe';
+config.requirejsPaths['image-size'] = './src/plugins/common/lib/image-size';
+config.requirejsPaths['buffer'] = './src/plugins/common/lib/buffer';
 
 // Seeds (removing all WebGME seeds)
 config.seedProjects.basePaths = config.seedProjects.basePaths

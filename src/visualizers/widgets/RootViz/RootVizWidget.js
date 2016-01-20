@@ -44,7 +44,8 @@ define([
     var NODE_WHITELIST = {
         data: true,
         architectures: true,
-        models: true
+        models: true,
+        'labeled-data': true
     };
     RootVizWidget.prototype.addNode = function (desc) {
         if (desc) {

@@ -61,6 +61,16 @@ define([
                 valueType: 'string',
                 readOnly: false
             },
+            // TODO: This may not be the best place for this
+            {  // Batch size
+                name: 'batchSize',
+                displayName: 'Batch Size',
+                description: 'Number of images to train on at a time',
+                value: 64,
+                valueType: 'number',
+                minValue: 0,
+                readOnly: false
+            },
             {  // Data source type
                 name: 'dataType',
                 displayName: 'Input Data Type',
@@ -182,8 +192,11 @@ define([
     };
 
     CaffeGenerator.prototype._getLossLayerNames = function() {
-        var self = this,
-            nodeBase = this.META.LossBaseLayer;
+        return this._getChildLayerNames(this.META.LossBaseLayer);
+    };
+
+    CaffeGenerator.prototype._getChildLayerNames = function(nodeBase) {
+        var self = this;
 
         return Object.keys(this.META)
             .filter(function(name) {
