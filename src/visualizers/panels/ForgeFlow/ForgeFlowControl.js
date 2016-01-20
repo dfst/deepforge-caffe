@@ -15,7 +15,8 @@ define([
     'use strict';
 
     var ForgeFlowControl,
-        ROOT_PATH = '';
+        ROOT_PATH = '',
+        DATA_PATH = '/385167607';  // FIXME: discover this
 
     ForgeFlowControl = function (options) {
         EasyDAGControl.call(this, options);
@@ -28,6 +29,9 @@ define([
         this._widget.currentNodeId = nodeId;
         // Add the data node to the territory
         this._selfPatterns[ROOT_PATH] = {children: 2};
+
+        // Add the raw data nodes
+        this._selfPatterns[DATA_PATH] = {children: 2};
         EasyDAGControl.prototype.selectedObjectChanged.call(this, nodeId);
     };
 
@@ -56,6 +60,85 @@ define([
     ForgeFlowControl.prototype.onAddItem = function (nodeId) {
         // Create a unique id for the layer
         this._client.setAttributes(nodeId, 'name', `layer_${new Date().getTime()}`);
+    };
+
+    /* * * * * * * * * * * Event Handling * * * * * * * * * * */
+
+    ForgeFlowControl.prototype._initWidgetEventHandlers = function() {
+        EasyDAGControl.prototype._initWidgetEventHandlers.call(this); 
+        this._widget.createLabeledDataNode = this.createLabeledDataNode.bind(this); 
+    };
+
+    ForgeFlowControl.prototype.createLabeledDataNode = function(parentId, name, classes, size) {
+        var msg = 'Creating labeled dataset "' + name + '"',
+            labeledBaseId,
+            classBaseId,
+            nodeId,
+
+            classNames,
+            classToNodeIds = {},
+            classIds,
+            childIds,
+            params;
+
+        // Get base ids
+        labeledBaseId = this._client.getAllMetaNodes()
+            .find(node => node.getAttribute('name') === 'LabeledData')
+            .getId();
+
+        classBaseId = this._client.getAllMetaNodes()
+            .find(node => node.getAttribute('name') === 'DataGroup')
+            .getId();
+
+        this._client.startTransaction(msg);
+
+        // Create the labeled node with the given name
+        nodeId = this._client.createChild({
+            parentId,
+            baseId: labeledBaseId
+        });
+        this._client.setAttributes(nodeId, 'name', name);
+
+        if (typeof size.width === 'number' && typeof size.height === 'number') {
+            this._client.setAttributes(nodeId, 'width', size.width);
+            this._client.setAttributes(nodeId, 'height', size.height);
+        }
+
+        // For each of the classes
+        // Get all children image ids
+        classNames = Object.keys(classes);
+        for (var i = classNames.length; i--;) {
+            childIds = classes[classNames[i]]
+                // Get 2d array of children
+                .map(id => this._client.getNode(id).getChildrenIds())
+                .reduce((l1, l2) => l1.concat(l2), []);
+
+            classToNodeIds[classNames[i]] = childIds;
+        }
+
+        // Create class nodes and copy
+        classIds = classNames.map(name => {
+            var id = this._client.createChild({
+                parentId: nodeId,
+                baseId: classBaseId
+            });
+            this._client.setAttributes(id, 'name', name);
+            return id;
+        });
+
+        // Copy all these images into the class nodes
+        for (var i = classNames.length; i--;) {
+            params = {parentId: classIds[i]};
+            classToNodeIds[classNames[i]]
+                .forEach(childId => params[childId] = {});
+
+            this._client.copyMoreNodes(params);
+        }
+
+        this._client.completeTransaction(msg);
+
+        // Return the node
+        return this._getObjectDescriptor(nodeId);
     };
 
     return ForgeFlowControl;

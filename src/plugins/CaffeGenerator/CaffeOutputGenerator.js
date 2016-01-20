@@ -13,7 +13,8 @@ define(['TemplateCreator/outputs/OutputGenerator',
 
     // Caffe Constants
     var TRAINING = '_training_',
-        TESTING = '_testing_';
+        TESTING = '_testing_',
+        DATA_NODE_BASE = 'labeleddata';
 
     var CaffeGenerator = function() {
         this.template = CaffeTemplate;
@@ -53,18 +54,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
         _.extend(tree, this.runOptions);
         tree.archName = archName;
 
-        // Add the data source and type to data nodes
-        // As the children are topo sorted, data nodes should be first
-        for (var i = tree[Constants.CHILDREN].length; i--;) {
-            node = tree[Constants.CHILDREN][i];
-            // FIXME: Add support for more data inputs?
-            if (node[Constants.BASE].name === 'Data') {
-                // Add the data attributes
-                node.location = '"'+this.runOptions.inputData+'"';
-                node.backend = this.runOptions.dataType;
-                dataName = node.name;
-            }
-        }
+        dataName = this.updateDataNode(tree);
 
         // Create the architecture file
         template = _.template(this.template[Constants.ARCH]);
@@ -95,6 +85,32 @@ define(['TemplateCreator/outputs/OutputGenerator',
         return outputFiles;
     };
 
+    CaffeGenerator.prototype.updateDataNode = function(tree) {
+        var node;
+        // Add the data source and type to data nodes
+        // As the children are topo sorted, data nodes should be first
+        for (var i = tree[Constants.CHILDREN].length; i--;) {
+            node = tree[Constants.CHILDREN][i];
+            if (node[Constants.BASE].name === 'LabeledData') {
+                // Convert it to ImageData Layer
+                node[Constants.BASE].name = 'ImageData';
+                // Add the data attributes
+                node.source = '"'+this.runOptions.inputData+'"';
+                // TODO: Determine the best place to put these settings...
+                // TODO: set the base value
+                node.batch_size = this.runOptions.batchSize;
+                node.rand_skip = 0;  // we don't need this
+                node.shuffle = false;  // we (probably) don't need this
+
+                // TODO: height, width
+                node.new_width = 256;
+                node.new_height = 256;
+                return node.name;
+            }
+        }
+        return null;
+    };
+
     CaffeGenerator.prototype._addLabelLayer = function(tree) {
         // Add the label layer to the network if needed (check for loss layers)
         // Get a list of labels that require a label layer (loss layers)
@@ -122,7 +138,7 @@ define(['TemplateCreator/outputs/OutputGenerator',
             // Update the data layers
             tree[Constants.CHILDREN]
                 .filter(function(layer) {  // Get data layers
-                    return layer[Constants.BASE].name.toLowerCase() === 'data';
+                    return layer[Constants.BASE].name.toLowerCase() === DATA_NODE_BASE;
                 })
                 .forEach(function(layer) {  // add label to "next" values
                     layer[Constants.NEXT].push(labelLayer);

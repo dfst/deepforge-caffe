@@ -20,6 +20,10 @@
       "UploadData": {
         "src": "src/plugins/UploadData",
         "test": "test/plugins/UploadData"
+      },
+      "CreateLabeledData": {
+        "src": "src/plugins/CreateLabeledData",
+        "test": "test/plugins/CreateLabeledData"
       }
     },
     "addOns": {},

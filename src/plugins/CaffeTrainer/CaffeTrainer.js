@@ -8,10 +8,12 @@
 define([
     'plugin/PluginConfig',
     'plugin/CaffeGenerator/CaffeGenerator/CaffeGenerator',
+    '../common/DataPlugin',
     'executor/ExecutorClient'
 ], function (
     PluginConfig,
     CaffeGenerator,
+    DataPlugin,
     ExecutorClient
 ) {
     'use strict';
@@ -25,7 +27,7 @@ define([
     var CONFIG_CONSTANTS = 
         {
             dataType: 'LMDB',
-            inputData: 'NONE',
+            inputData: 'images.txt',  // using ImageData layer
             display: 500,
             snapshot: 10000000,  // No snapshots -> just the last result!
             snapshotPrefix: 'snapshot_'
@@ -91,21 +93,15 @@ define([
             config = this.getCurrentConfig();
 
         self.getDataNode(function(e, dataNode) {
-            var dataHash;
+            var name;
 
             if (e) {
                 return callback(e);
             }
-            dataHash = self.core.getAttribute(dataNode, 'data');
-            self.blobClient.getMetadata(dataHash, function(err, metadata) {
-                if (err) {
-                    return callback(err);
-                }
 
-                // Set the inputData in the config to the file name
-                config.inputData = metadata.name.replace('.zip', '');
-                callback();
-            });
+            name = self.core.getAttribute(dataNode, 'name');
+            // Set the inputData in the config to the file name
+            callback();
         });
     };
 
@@ -138,14 +134,14 @@ define([
             ]
         };
         files['executor_config.json'] = JSON.stringify(executorConfig, null, 4);
-        this.addDataFromBlob(files, function(e, zipName) {
+        this.addDataFromBlob(files, function(e) {
             if (e) {
                 return callback(e, self.result);
             }
             // Add shell execution script
-            files[shellScript] = 'unzip ' + zipName + ' && ' + metadata.trainCommand;
+            files[shellScript] = metadata.trainCommand;
 
-            artifact = self.blobClient.createArtifact('executionFiles');
+            artifact = self.blobClient.createArtifact('modelTrainingFiles');
 
             artifact.addFiles(files, function (err) {
                 if (err) {
@@ -187,17 +183,16 @@ define([
                 return callback(e);
             }
 
-            // Get the data zip file
-            dataHash = self.core.getAttribute(dataNode, 'data');
-            self.blobClient.getObject(dataHash, function(err, arrayBuffer) {
+            // collect the images from the LabeledData node
+            self.prepareLabeledData(dataNode, (err, images) => {
                 // Add it to the "files" object by name
                 if (err) {
                     return callback(err);
                 }
 
-                name = self.core.getAttribute(dataNode, 'name') + '.zip';
-                files[name] = arrayBuffer;
-                callback(null, name);
+                // TODO: add the images
+                _.extend(files, images);
+                callback(null);
             });
         });
     };
@@ -214,7 +209,7 @@ define([
                 return callback(e);
             }
             dataNodes = children.filter(function(child) {
-                return self.isMetaTypeOf(child, self.META.DataBase);
+                return self.isMetaTypeOf(child, self.META.LabeledData);
             });
 
             if (dataNodes.length > 1) {
@@ -363,6 +358,8 @@ define([
             callback(null, modelsDir);
         });
     };
+
+    _.extend(CaffeTrainer.prototype, DataPlugin.prototype);
 
     return CaffeTrainer;
 });
