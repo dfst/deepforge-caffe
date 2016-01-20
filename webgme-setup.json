@@ -95,6 +95,13 @@
         "panel": "src/visualizers/panels/ForgeActionButton",
         "secondary": true,
         "widget": "src/visualizers/widgets/ForgeActionButton"
+      },
+      "Footer": {
+        "src": "panels/Footer/FooterPanel",
+        "title": "Footer",
+        "panel": "src/visualizers/panels/Footer",
+        "secondary": true,
+        "widget": "src/visualizers/widgets/Footer"
       }
     },
     "layouts": {
