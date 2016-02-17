@@ -105,9 +105,6 @@ define([
                 return callback(err, this.result);
             }
 
-            // Can I do this without downloading and re-uploading the files?
-            // TODO
-
             // Create the executor job
             this.logger.debug('Created executor files!');
             this.executeJob(hash, callback);
@@ -119,42 +116,46 @@ define([
     CaffeClassifier.prototype.IMAGE_NAME = 'image.png';
     CaffeClassifier.prototype.createExecutorFiles = function (callback) {
         var files = {},
-            executorConfig;
+            executorConfig,
+            modelHash;
 
         // Get the trained model
-        this.getTrainedModel((err, model) => {
+        modelHash = this.core.getAttribute(this.activeNode, 'model');
+        this.addExecutionFiles(files, (err) => {
+            var artifact;
             if (err) {
                 return callback(err, this.result);
             }
-            files[this.MODEL_NAME] = model;
 
-            this.addExecutionFiles(files, (err) => {
-                var artifact;
-                if (err) {
-                    return callback(err, this.result);
-                }
+            executorConfig = this.getExecutorConfig();
+            files['executor_config.json'] = JSON.stringify(executorConfig, null, 2);
 
-                executorConfig = this.getExecutorConfig();
-                files['executor_config.json'] = JSON.stringify(executorConfig, null, 2);
+            artifact = this.blobClient.createArtifact('classificationFiles');
+            this.logger.debug('Adding files: ' + Object.keys(files)
+                    .map(name => '"' + name + '"').join(','));
 
-                artifact = this.blobClient.createArtifact('classificationFiles');
-                this.logger.debug('Adding files: ' + Object.keys(files)
-                        .map(name => '"' + name + '"').join(','));
+            // Add files by content
+            artifact.addObjectHash(this.MODEL_NAME, modelHash, err => {
 
-                // Add hashes
-                // TODO
-
-                // Add files by content
                 artifact.addFiles(files, (err) => {
                     if (err) {
                         return callback(err, this.result);
                     }
 
                     this.logger.debug('Added classification files to blob');
-                    artifact.save(callback);
+                    this.beforeArtifactSave(artifact, err => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        artifact.save(callback)
+                    });
                 });
             });
         });
+    };
+
+    CaffeClassifier.prototype.beforeArtifactSave = function (artifact, callback) {
+        callback();
     };
 
     CaffeClassifier.prototype.getExecutorConfig = function (callback) {
@@ -181,9 +182,8 @@ define([
     };
 
     // Should I change this so the models are webgme objects?
-    // TODO
     CaffeClassifier.prototype.getTrainedModel = function (callback) {
-        var modelHash = this.core.getAttribute(this.activeNode, 'model');
+
 
         // Select the model to use from the available snapshots
         this.blobClient.getMetadata(modelHash, (err, metadata) => {
@@ -195,6 +195,7 @@ define([
                 return callback(err, this.result);
             }
 
+            // FIXME: Change this so it is just one model - not a zip file
             models = Object.keys(metadata.content);
             // Choose the model by the largest iteration
             modelName = this.selectModelName(models),

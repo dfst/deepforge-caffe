@@ -91,21 +91,12 @@ define([
             hashes = imageNodes
                 .map(node => this.core.getAttribute(node, 'hash'));
 
-            async.map(hashes, this.blobClient.getObject.bind(this.blobClient),
-                (err, objs) => {
-                    var imageName;
-                    if (err) {
-                        return callback(err);
-                    }
-                    for (var i = objs.length; i--;) {
-                        imageName = names[i];
-                        imageDict[imageName] = objs[i];
-                        this.logger.info('finished adding image "' + imageName + '"');
-                    }
-                    this.logger.info('finished adding class "' + className + '"');
-                    images[className] = imageDict;
-                    callback(null, imageDict);
-                });
+            for (var i = hashes.length; i--;) {
+                imageDict[names[i]] = hashes[i];
+            }
+            this.logger.info('finished adding class "' + className + '"');
+            images[className] = imageDict;
+            callback(null, imageDict);
         });
     };
 
