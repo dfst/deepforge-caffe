@@ -275,13 +275,55 @@ define([
         this.result.addArtifact(jInfo.resultHashes.all);
         
         modelHash = jInfo.resultHashes.models;
-        this.core.setAttribute(this.modelNode, 'model', modelHash);
+        this.getModelHash(modelHash, (err, hash) => {
+            if (err) {
+                return callback(err);
+            }
 
-        this.save('Created model at: '+name, function (err) {
-            self.result.setSuccess(!err);
-            callback(err, self.result);
+            this.core.setAttribute(this.modelNode, 'model', hash);
+
+            this.save('Created model at: '+name, function (err) {
+                self.result.setSuccess(!err);
+                callback(err, self.result);
+            });
         });
     };
+
+    CaffeTrainer.prototype.getModelHash = function (modelsHash, callback) {
+        this.blobClient.getMetadata(modelsHash, (err, metadata) => {
+            var models,
+                modelName,
+                hash;
+
+            if (err) {
+                return callback(err, this.result);
+            }
+
+            // Choose the model by the largest iteration
+            models = Object.keys(metadata.content);
+            modelName = this.selectModelName(models),
+            this.logger.debug('Saving model "' + modelName + '"');
+            hash = metadata.content[modelName].content;
+
+            callback(null, hash);
+        });
+    };
+
+    CaffeTrainer.prototype.selectModelName = function (models) {
+        var numbers = /\d+/,
+            match,
+            i;
+
+        return models
+            .map(name => {  // Get the iteration number
+                match = name.match(numbers);
+                i = match ? +match[0] : 0;
+                return [name, i];
+            })
+            .sort((a, b) => a[1] > b[1])
+            .shift()[0];
+    };
+
 
     CaffeTrainer.prototype.atFailedJob = function(jInfo, callback) {
         //Add the resultHashes even though job failed (for user to debug).

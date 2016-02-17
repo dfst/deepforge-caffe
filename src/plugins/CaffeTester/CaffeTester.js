@@ -26,6 +26,7 @@ define([
     var CaffeTester = function () {
         // Call base class' constructor.
         PluginBase.call(this);
+        this._images = {};
     };
 
     // Prototypal inheritance from PluginBase.
@@ -78,6 +79,8 @@ define([
     CaffeTester.prototype.main = function(callback){
         // Set the dataNode value from activeNode's pointer
         this.config = this.getCurrentConfig();
+        this._images = {};
+
         var dataId = this.core.getPointerPath(this.activeNode, 'testData');
         if (!dataId) {
             this.result.setSuccess(false);
@@ -134,17 +137,27 @@ define([
             files[this.PROTO_NAME] = template({dataLayer});
 
             // Adding the images
-            // FIXME: Does the data actually need to be added to the blob again?
             this.prepareLabeledData(this.dataNode, (err, images) => {
                 // Add it to the "files" object by name
+                var images;
                 if (err) {
                     return callback(err);
                 }
 
-                _.extend(files, images);
+                // Record the file hashes and add the txt file
+                files[DataUtils.DataName] = images[DataUtils.DataName];
+                Object.keys(images)
+                    .filter(name => name !== DataUtils.DataName)  // remove txt file
+                    .forEach(name => this._images[name] = images[name]);
+
                 return callback(null);
             });
         });
+    };
+
+    CaffeTester.prototype.beforeArtifactSave = function (artifact, callback) {
+        // Add the image hashes
+        artifact.addObjectHashes(this._images, callback);
     };
 
     CaffeTester.prototype.createDataLayer = function (content) {
