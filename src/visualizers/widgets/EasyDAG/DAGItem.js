@@ -36,6 +36,12 @@ define([
 
         // Set up decorator callbacks
         this.setupDecoratorCallbacks();
+
+        // REMOVE (used for tested)
+        //var r = Math.random();
+        //if (r < .3) this.error('erroring!')
+        //else if (r < .6) this.warn('this is a warning');
+
     };
 
     DAGItem.prototype.setupDecoratorCallbacks = function() {
@@ -100,6 +106,23 @@ define([
 
     DAGItem.prototype.onDeselect = function() {
         this.decorator.onDeselect();
+    };
+
+    /* * * * * * * * ERRORS/WARNINGS * * * * * * * */
+
+    DAGItem.prototype.error = function(message) {
+        this.decorator.highlight('red', message);
+        this.decorator.enableTooltip(message, 'alert');
+    };
+
+    DAGItem.prototype.warn = function(message) {
+        this.decorator.highlight('#ffa500', message);
+        this.decorator.enableTooltip(message, 'standard');
+    };
+
+    DAGItem.prototype.clear = function() {
+        this.decorator.unHighlight();
+        this.decorator.disableTooltip();
     };
 
     /* * * * * * * * ADD BUTTON * * * * * * * */

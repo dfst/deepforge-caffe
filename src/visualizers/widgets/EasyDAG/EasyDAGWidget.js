@@ -16,7 +16,8 @@ define([
     './Connection',
     './SelectionManager',
     'd3',
-    'css!./styles/EasyDAGWidget.css'
+    'css!./styles/EasyDAGWidget.css',
+    'css!./lib/opentip.css'
 ], function (
     dagre,
     assert,
@@ -34,15 +35,7 @@ define([
         WIDGET_CLASS = 'easy-dag',
         MARGIN = 20,
         DURATION = 750,
-        MARGIN = 20,
-        i = 0,
-        CLOSED = 'closed',
-        OPEN = 'open',
-        LEAF = 'LEAF',
-        OPENING = 'opening',
-        CLOSING = 'CLOSING',
-        NODE_SIZE = 15,
-        COUNTER = 0;
+        i = 0;
 
     EasyDAGWidget = function (logger, container) {
         this._logger = logger.fork('Widget');
@@ -82,16 +75,7 @@ define([
         this.$connContainer = this.$svg.append('g')
             .attr('id', 'connection-container');
 
-        // Connection markers
-        this._$svg.append("defs").append("marker")
-            .attr("id", "arrowhead")
-            .attr("refX", 5.25)
-            .attr("refY", 2)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 4)
-            .attr("orient", "auto")
-            .append("path")
-                    .attr("d", "M 0,0 V 4 L6,2 Z");
+        this.initSvgDefs();
 
         this.$el[0].style.position = 'absolute';
         this._$svg.style('position', 'relative');
@@ -106,6 +90,40 @@ define([
 
         // Setup DAGItem callbacks
         this.resizeDAG();
+    };
+
+    EasyDAGWidget.prototype.initSvgDefs = function () {
+        var defs = this._$svg.append("defs"),
+            filter;
+
+        // Connection markers
+        defs.append("marker")
+            .attr("id", "arrowhead")
+            .attr("refX", 5.25)
+            .attr("refY", 2)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 4)
+            .attr("orient", "auto")
+            .append("path")
+                    .attr("d", "M 0,0 V 4 L6,2 Z");
+
+        // highlighting
+        filter = defs.append('filter')
+            .attr('id', 'highlight')
+            .attr('x', '-50%')
+            .attr('y', '-50%')
+            .attr('width', '200%')
+            .attr('height', '200%');
+
+        filter.append('feGaussianBlur')
+            .attr('result', 'blurOut')
+            .attr('in', 'SourceGraphic')
+            .attr('stdDeviation', '9');
+
+        filter.append('feBlend')
+            .attr('in', 'SourceGraphic')
+            .attr('in2', 'blurOut')
+            .attr('mode', 'normal');
     };
 
     EasyDAGWidget.prototype.setupItemCallbacks = function () {
