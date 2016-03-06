@@ -41,5 +41,11 @@
     "title": "RootViz",
     "panel": "panels/RootViz/RootVizPanel",
     "DEBUG_ONLY": false
+  },
+  {
+    "id": "BreadcrumbHeader",
+    "title": "BreadcrumbHeader",
+    "panel": "panels/BreadcrumbHeader/BreadcrumbHeaderPanel",
+    "DEBUG_ONLY": false
   }
 ]
