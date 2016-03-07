@@ -33,6 +33,10 @@ define([
             baseId,
             nodes = [];
 
+        if (!nodeId && nodeId !== '') {
+            return;
+        }
+
         // Clear the bar
         this.clear();
 

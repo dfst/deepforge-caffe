@@ -24,8 +24,8 @@
     },
     "addOns": {},
     "seeds": {
-      "Caffe": {
-        "src": "src/seeds/Caffe"
+      "Minimal": {
+        "src": "src/seeds/Minimal"
       }
     },
     "visualizers": {
