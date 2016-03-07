@@ -120,8 +120,8 @@
       "MinimalLayout": {
         "src": "src/layouts/MinimalLayout"
       },
-      "CHFLayout": {
-        "src": "src/layouts/CHFLayout"
+      "ForgeLayout": {
+        "src": "src/layouts/ForgeLayout"
       }
     },
     "decorators": {
@@ -171,7 +171,12 @@
     "addOns": {},
     "seeds": {},
     "visualizers": {},
-    "layouts": {},
+    "layouts": {
+      "CHFLayout": {
+        "project": "webgme-chflayout",
+        "path": "node_modules/webgme-chflayout/src/layouts/CHFLayout"
+      }
+    },
     "decorators": {},
     "addons": {}
   }

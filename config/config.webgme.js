@@ -11,6 +11,7 @@ var config = require('webgme/config/config.default'),
 config.plugin.basePaths.push('src/plugins');
 config.plugin.basePaths.push('node_modules/webgme-simple-nodes/src/plugins');
 config.visualization.layout.basePaths.push('src/layouts');
+config.visualization.layout.basePaths.push('node_modules/webgme-chflayout/src/layouts');
 config.visualization.decoratorPaths.push('src/decorators');
 config.seedProjects.basePaths.push('src/seeds/Minimal');
 
@@ -19,6 +20,7 @@ config.seedProjects.basePaths.push('src/seeds/Minimal');
 config.visualization.visualizerDescriptors.push('./src/visualizers/Visualizers.json');
 // Add requirejs paths
 config.requirejsPaths = {
+  'CHFLayout': 'node_modules/webgme-chflayout/src/layouts/CHFLayout',
   'TemplateCreator': 'node_modules/webgme-simple-nodes/src/plugins/TemplateCreator',
   'panels': './src/visualizers/panels',
   'widgets': './src/visualizers/widgets'
