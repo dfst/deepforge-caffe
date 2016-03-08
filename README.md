@@ -4,6 +4,8 @@
 [![Stories in Ready](https://badge.waffle.io/dfst/deepforge-caffe.png?label=ready&title=Ready)](https://waffle.io/dfst/deepforge-caffe)
 
 # DeepForge-Caffe
+
+[![Join the chat at https://gitter.im/dfst/deepforge-caffe](https://badges.gitter.im/dfst/deepforge-caffe.svg)](https://gitter.im/dfst/deepforge-caffe?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 DeepForge is an open-source visual development environment for deep learning. Currently, it supports Convolutional Neural Networks but we are planning on supporting additional deep learning classifiers such as RNNs and LSTMs. Additional features include real-time collaborative editing and version control.
 
 DeepForge-Caffe is a variant of DeepForge which uses Caffe as for training and testing the models.
