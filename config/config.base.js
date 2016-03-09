@@ -10,9 +10,6 @@ config.mongo.uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/cnn-creat
 // Default Project
 config.client.defaultConnectionRouter = 'basic';
 
-// Customize Visualizers
-//config.visualization.visualizerDescriptors = ['./Visualizers.json'];
-
 // Plugins
 config.plugin.allowServerExecution = true;
 config.plugin.allowBrowserExecution = true;

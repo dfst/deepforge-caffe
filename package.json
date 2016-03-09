@@ -22,8 +22,12 @@
   "license": "ISC",
   "dependencies": {
     "underscore": "^1.8.3",
-    "webgme": "webgme/webgme",
+    "webgme": "=1.4.1",
+    "webgme-autoviz": "dfst/webgme-autoviz",
+    "webgme-breadcrumbheader": "dfst/webgme-breadcrumbheader",
     "webgme-chflayout": "dfst/webgme-chflayout",
+    "webgme-easydag": "dfst/webgme-easydag",
+    "webgme-fab": "dfst/webgme-fab",
     "webgme-simple-nodes": "brollb/webgme-simple-nodes"
   },
   "devDependencies": {

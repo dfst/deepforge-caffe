@@ -2,7 +2,7 @@
   "panels": [
     {
       "id": "Header",
-      "panel": "MinHeader/MinHeaderPanel",
+      "panel": "BreadcrumbHeader/BreadcrumbHeaderPanel",
       "container": "header",
       "DEBUG_ONLY": false
     },
@@ -13,14 +13,14 @@
       "DEBUG_ONLY": false
     },
     {
-      "id": "VizSetter",
-      "panel": "VizSetter/VizSetterPanel",
+      "id": "AutoViz",
+      "panel": "AutoViz/AutoVizPanel",
       "container": "center",
       "DEBUG_ONLY": false
     },
     {
-      "id": "ForgeActionButton",
-      "panel": "ForgeActionButton/ForgeActionButton",
+      "id": "FloatingActionButton",
+      "panel": "FloatingActionButton/FloatingActionButton",
       "container": "float",
       "DEBUG_ONLY": false
     }
