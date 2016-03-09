@@ -47,12 +47,6 @@
         "panel": "src/visualizers/panels/CNNViz",
         "widget": "src/visualizers/widgets/CNNViz"
       },
-      "MinHeader": {
-        "src": "panels/MinHeader/MinHeaderPanel",
-        "title": "MinHeader",
-        "panel": "src/visualizers/panels/MinHeader",
-        "widget": "src/visualizers/widgets/MinHeader"
-      },
       "PluginButton": {
         "src": "panels/PluginButton/PluginButtonPanel",
         "title": "PluginButton",
@@ -172,6 +166,13 @@
         "secondary": false,
         "widget": "src/visualizers/widgets/AutoViz",
         "project": "webgme-autoviz"
+      },
+      "BreadcrumbHeader": {
+        "src": "panels/BreadcrumbHeader/BreadcrumbHeaderPanel",
+        "title": "BreadcrumbHeader",
+        "panel": "src/visualizers/panels/BreadcrumbHeader",
+        "secondary": true,
+        "project": "webgme-breadcrumbheader"
       }
     },
     "layouts": {

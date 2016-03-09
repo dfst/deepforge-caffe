@@ -23,12 +23,15 @@ config.visualization.visualizerDescriptors.push('./src/visualizers/Visualizers.j
 config.requirejsPaths = {
   'CHFLayout': 'node_modules/webgme-chflayout/src/layouts/CHFLayout',
   'AutoViz': 'panels/AutoViz/AutoVizPanel',
+  'BreadcrumbHeader': 'panels/BreadcrumbHeader/BreadcrumbHeaderPanel',
   'EasyDAG': 'panels/EasyDAG/EasyDAGPanel',
   'TemplateCreator': 'node_modules/webgme-simple-nodes/src/plugins/TemplateCreator',
   'panels': './src/visualizers/panels',
   'widgets': './src/visualizers/widgets',
-  'panel/AutoViz': './node_modules/webgme-autoviz/src/visualizers/panels/AutoViz',
-  'widget/AutoViz': './node_modules/webgme-autoviz/src/visualizers/widgets/AutoViz',
+  'panels/AutoViz': './node_modules/webgme-autoviz/src/visualizers/panels/AutoViz',
+  'widgets/AutoViz': './node_modules/webgme-autoviz/src/visualizers/widgets/AutoViz',
+  'panels/BreadcrumbHeader': './node_modules/webgme-breadcrumbheader/src/visualizers/panels/BreadcrumbHeader',
+  'widgets/BreadcrumbHeader': './node_modules/webgme-breadcrumbheader/',
   'panels/EasyDAG': './node_modules/webgme-easydag/src/visualizers/panels/EasyDAG',
   'widgets/EasyDAG': './node_modules/webgme-easydag/src/visualizers/widgets/EasyDAG'
 };

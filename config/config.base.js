@@ -12,8 +12,8 @@ config.client.defaultConnectionRouter = 'basic';
 
 // requirejs path additions
 // FIXME: this should not be required... I need to update webgme-cli
+config.requirejsPaths['panel/BreadcrumbHeader'] = './node_modules/webgme-breadcrumbheader/src/visualizers/panels/BreadcrumbHeader';
 config.requirejsPaths['panel/AutoViz'] = './node_modules/webgme-autoviz/src/visualizers/panels/AutoViz';
-config.requirejsPaths['widget/AutoViz'] = './node_modules/webgme-autoviz/src/visualizers/widgets/AutoViz';
 config.requirejsPaths['panels/EasyDAG'] = './node_modules/webgme-easydag/src/visualizers/panels/EasyDAG';
 config.requirejsPaths['widgets/EasyDAG'] = './node_modules/webgme-easydag/src/visualizers/widgets/EasyDAG';
 

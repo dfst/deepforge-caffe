@@ -2,7 +2,7 @@
   "panels": [
     {
       "id": "Header",
-      "panel": "MinHeader/MinHeaderPanel",
+      "panel": "BreadcrumbHeader/BreadcrumbHeaderPanel",
       "container": "header",
       "DEBUG_ONLY": false
     },
