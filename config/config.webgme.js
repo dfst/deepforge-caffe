@@ -21,9 +21,12 @@ config.visualization.visualizerDescriptors.push('./src/visualizers/Visualizers.j
 // Add requirejs paths
 config.requirejsPaths = {
   'CHFLayout': 'node_modules/webgme-chflayout/src/layouts/CHFLayout',
+  'EasyDAG': 'panels/EasyDAG/EasyDAGPanel',
   'TemplateCreator': 'node_modules/webgme-simple-nodes/src/plugins/TemplateCreator',
   'panels': './src/visualizers/panels',
-  'widgets': './src/visualizers/widgets'
+  'widgets': './src/visualizers/widgets',
+  'panels/EasyDAG': './node_modules/webgme-easydag/src/visualizers/panels/EasyDAG',
+  'widgets/EasyDAG': './node_modules/webgme-easydag/src/visualizers/widgets/EasyDAG'
 };
 
 

@@ -59,13 +59,6 @@
         "panel": "src/visualizers/panels/PluginButton",
         "widget": "src/visualizers/widgets/PluginButton"
       },
-      "EasyDAG": {
-        "src": "panels/EasyDAG/EasyDAGPanel",
-        "title": "EasyDAG",
-        "panel": "src/visualizers/panels/EasyDAG",
-        "secondary": false,
-        "widget": "src/visualizers/widgets/EasyDAG"
-      },
       "ForgeFlow": {
         "src": "panels/ForgeFlow/ForgeFlowPanel",
         "title": "ForgeFlow",
@@ -170,7 +163,16 @@
     },
     "addOns": {},
     "seeds": {},
-    "visualizers": {},
+    "visualizers": {
+      "EasyDAG": {
+        "src": "panels/EasyDAG/EasyDAGPanel",
+        "title": "EasyDAG",
+        "panel": "src/visualizers/panels/EasyDAG",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/EasyDAG",
+        "project": "webgme-easydag"
+      }
+    },
     "layouts": {
       "CHFLayout": {
         "project": "webgme-chflayout",

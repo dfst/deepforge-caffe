@@ -13,12 +13,6 @@
     "DEBUG_ONLY": false
   },
   {
-    "id": "EasyDAG",
-    "title": "EasyDAG",
-    "panel": "panels/EasyDAG/EasyDAGPanel",
-    "DEBUG_ONLY": false
-  },
-  {
     "id": "ForgeFlow",
     "title": "ForgeFlow",
     "panel": "panels/ForgeFlow/ForgeFlowPanel",
@@ -46,6 +40,12 @@
     "id": "BreadcrumbHeader",
     "title": "BreadcrumbHeader",
     "panel": "panels/BreadcrumbHeader/BreadcrumbHeaderPanel",
+    "DEBUG_ONLY": false
+  },
+  {
+    "id": "EasyDAG",
+    "title": "EasyDAG",
+    "panel": "panels/EasyDAG/EasyDAGPanel",
     "DEBUG_ONLY": false
   }
 ]
