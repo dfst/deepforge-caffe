@@ -13,8 +13,8 @@
       "DEBUG_ONLY": false
     },
     {
-      "id": "VizSetter",
-      "panel": "VizSetter/VizSetterPanel",
+      "id": "AutoViz",
+      "panel": "AutoViz/AutoVizPanel",
       "container": "center",
       "DEBUG_ONLY": false
     },

@@ -10,8 +10,12 @@ config.mongo.uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/cnn-creat
 // Default Project
 config.client.defaultConnectionRouter = 'basic';
 
-// Customize Visualizers
-//config.visualization.visualizerDescriptors = ['./Visualizers.json'];
+// requirejs path additions
+// FIXME: this should not be required... I need to update webgme-cli
+config.requirejsPaths['panel/AutoViz'] = './node_modules/webgme-autoviz/src/visualizers/panels/AutoViz';
+config.requirejsPaths['widget/AutoViz'] = './node_modules/webgme-autoviz/src/visualizers/widgets/AutoViz';
+config.requirejsPaths['panels/EasyDAG'] = './node_modules/webgme-easydag/src/visualizers/panels/EasyDAG';
+config.requirejsPaths['widgets/EasyDAG'] = './node_modules/webgme-easydag/src/visualizers/widgets/EasyDAG';
 
 // Plugins
 config.plugin.allowServerExecution = true;

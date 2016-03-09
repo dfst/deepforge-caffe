@@ -73,13 +73,6 @@
         "secondary": false,
         "widget": "src/visualizers/widgets/TrainedModelList"
       },
-      "VizSetter": {
-        "src": "panels/VizSetter/VizSetterPanel",
-        "title": "VizSetter",
-        "panel": "src/visualizers/panels/VizSetter",
-        "secondary": false,
-        "widget": "src/visualizers/widgets/VizSetter"
-      },
       "TrainedModel": {
         "src": "panels/TrainedModel/TrainedModelPanel",
         "title": "TrainedModel",
@@ -171,6 +164,14 @@
         "secondary": false,
         "widget": "src/visualizers/widgets/EasyDAG",
         "project": "webgme-easydag"
+      },
+      "AutoViz": {
+        "src": "panels/AutoViz/AutoVizPanel",
+        "title": "AutoViz",
+        "panel": "src/visualizers/panels/AutoViz",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/AutoViz",
+        "project": "webgme-autoviz"
       }
     },
     "layouts": {
