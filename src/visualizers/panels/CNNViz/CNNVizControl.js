@@ -24,7 +24,7 @@ define([
 
     CNNVizControl = function (options) {
 
-        ModelEditorControl.call(this, options);
+        ModelEditorControl.call(this, options, ModelEditorControl.getDefaultConfig());
 
         this.logger = options.logger.fork('Control');
         this.logger.debug('ctor finished');
