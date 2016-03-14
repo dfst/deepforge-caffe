@@ -16,14 +16,34 @@ config.visualization.decoratorPaths.push('src/decorators');
 config.seedProjects.basePaths.push('src/seeds/Minimal');
 
 
+
+config.visualization.panelPaths.push('node_modules/webgme-easydag/src/visualizers/panels');
+config.visualization.panelPaths.push('node_modules/webgme-autoviz/src/visualizers/panels');
+config.visualization.panelPaths.push('node_modules/webgme-breadcrumbheader/src/visualizers/panels');
+config.visualization.panelPaths.push('node_modules/webgme-fab/src/visualizers/panels');
+config.visualization.panelPaths.push('src/visualizers/panels');
+
+
 // Visualizer descriptors
 config.visualization.visualizerDescriptors.push('./src/visualizers/Visualizers.json');
 // Add requirejs paths
 config.requirejsPaths = {
   'CHFLayout': 'node_modules/webgme-chflayout/src/layouts/CHFLayout',
+  'FloatingActionButton': 'panels/FloatingActionButton/FloatingActionButtonPanel',
+  'BreadcrumbHeader': 'panels/BreadcrumbHeader/BreadcrumbHeaderPanel',
+  'AutoViz': 'panels/AutoViz/AutoVizPanel',
+  'EasyDAG': 'panels/EasyDAG/EasyDAGPanel',
   'TemplateCreator': 'node_modules/webgme-simple-nodes/src/plugins/TemplateCreator',
   'panels': './src/visualizers/panels',
-  'widgets': './src/visualizers/widgets'
+  'widgets': './src/visualizers/widgets',
+  'panels/FloatingActionButton': './node_modules/webgme-fab/src/visualizers/panels/FloatingActionButton',
+  'widgets/FloatingActionButton': './node_modules/webgme-fab/src/visualizers/widgets/FloatingActionButton',
+  'panels/BreadcrumbHeader': './node_modules/webgme-breadcrumbheader/src/visualizers/panels/BreadcrumbHeader',
+  'widgets/BreadcrumbHeader': './node_modules/webgme-breadcrumbheader/',
+  'panels/AutoViz': './node_modules/webgme-autoviz/src/visualizers/panels/AutoViz',
+  'widgets/AutoViz': './node_modules/webgme-autoviz/src/visualizers/widgets/AutoViz',
+  'panels/EasyDAG': './node_modules/webgme-easydag/src/visualizers/panels/EasyDAG',
+  'widgets/EasyDAG': './node_modules/webgme-easydag/src/visualizers/widgets/EasyDAG'
 };
 
 

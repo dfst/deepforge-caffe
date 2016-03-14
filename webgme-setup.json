@@ -47,25 +47,6 @@
         "panel": "src/visualizers/panels/CNNViz",
         "widget": "src/visualizers/widgets/CNNViz"
       },
-      "MinHeader": {
-        "src": "panels/MinHeader/MinHeaderPanel",
-        "title": "MinHeader",
-        "panel": "src/visualizers/panels/MinHeader",
-        "widget": "src/visualizers/widgets/MinHeader"
-      },
-      "PluginButton": {
-        "src": "panels/PluginButton/PluginButtonPanel",
-        "title": "PluginButton",
-        "panel": "src/visualizers/panels/PluginButton",
-        "widget": "src/visualizers/widgets/PluginButton"
-      },
-      "EasyDAG": {
-        "src": "panels/EasyDAG/EasyDAGPanel",
-        "title": "EasyDAG",
-        "panel": "src/visualizers/panels/EasyDAG",
-        "secondary": false,
-        "widget": "src/visualizers/widgets/EasyDAG"
-      },
       "ForgeFlow": {
         "src": "panels/ForgeFlow/ForgeFlowPanel",
         "title": "ForgeFlow",
@@ -79,13 +60,6 @@
         "panel": "src/visualizers/panels/TrainedModelList",
         "secondary": false,
         "widget": "src/visualizers/widgets/TrainedModelList"
-      },
-      "VizSetter": {
-        "src": "panels/VizSetter/VizSetterPanel",
-        "title": "VizSetter",
-        "panel": "src/visualizers/panels/VizSetter",
-        "secondary": false,
-        "widget": "src/visualizers/widgets/VizSetter"
       },
       "TrainedModel": {
         "src": "panels/TrainedModel/TrainedModelPanel",
@@ -170,7 +144,39 @@
     },
     "addOns": {},
     "seeds": {},
-    "visualizers": {},
+    "visualizers": {
+      "EasyDAG": {
+        "src": "panels/EasyDAG/EasyDAGPanel",
+        "title": "EasyDAG",
+        "panel": "src/visualizers/panels/EasyDAG",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/EasyDAG",
+        "project": "webgme-easydag"
+      },
+      "AutoViz": {
+        "src": "panels/AutoViz/AutoVizPanel",
+        "title": "AutoViz",
+        "panel": "src/visualizers/panels/AutoViz",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/AutoViz",
+        "project": "webgme-autoviz"
+      },
+      "BreadcrumbHeader": {
+        "src": "panels/BreadcrumbHeader/BreadcrumbHeaderPanel",
+        "title": "BreadcrumbHeader",
+        "panel": "src/visualizers/panels/BreadcrumbHeader",
+        "secondary": true,
+        "project": "webgme-breadcrumbheader"
+      },
+      "FloatingActionButton": {
+        "src": "panels/FloatingActionButton/FloatingActionButtonPanel",
+        "title": "FloatingActionButton",
+        "panel": "src/visualizers/panels/FloatingActionButton",
+        "secondary": true,
+        "widget": "src/visualizers/widgets/FloatingActionButton",
+        "project": "webgme-fab"
+      }
+    },
     "layouts": {
       "CHFLayout": {
         "project": "webgme-chflayout",

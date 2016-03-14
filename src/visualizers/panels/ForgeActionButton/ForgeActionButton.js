@@ -3,7 +3,7 @@
 
 define([
     'js/Constants',
-    'panel/PluginButton/PluginButton',
+    'panel/FloatingActionButton/FloatingActionButton',
     './Actions',
     'text!./PluginConfig.json'
 ], function (
