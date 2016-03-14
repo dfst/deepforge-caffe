@@ -6,7 +6,7 @@
 'use strict';
 var testFixture = require('../../globals');
 
-describe.only('CaffeGenerator', function () {
+describe.skip('CaffeGenerator', function () {
     var gmeConfig = testFixture.getGmeConfig(),
         expect = testFixture.expect,
         logger = testFixture.logger.fork('CaffeGenerator'),
