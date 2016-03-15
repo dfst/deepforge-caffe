@@ -12,7 +12,7 @@ config.visualization.layout.basePaths.push('./src/layouts');
 config.plugin.allowServerExecution = true;
 
 // UI
-config.visualization.layout.default = 'ForgeLayout';
+config.visualization.layout.default = 'CHFLayout';
 
 validateConfig(config);
 module.exports = config;

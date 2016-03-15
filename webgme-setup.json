@@ -93,9 +93,6 @@
     "layouts": {
       "MinimalLayout": {
         "src": "src/layouts/MinimalLayout"
-      },
-      "ForgeLayout": {
-        "src": "src/layouts/ForgeLayout"
       }
     },
     "decorators": {
