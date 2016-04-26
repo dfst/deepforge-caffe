@@ -22,7 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "underscore": "^1.8.3",
-    "webgme": "^1.5.1",
+    "webgme": "=1.6.0",
     "webgme-autoviz": "dfst/webgme-autoviz",
     "webgme-breadcrumbheader": "dfst/webgme-breadcrumbheader",
     "webgme-chflayout": "dfst/webgme-chflayout",
