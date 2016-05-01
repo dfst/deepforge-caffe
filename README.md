@@ -8,8 +8,14 @@ DeepForge is an open-source visual development environment for deep learning. Cu
 
 DeepForge-Caffe is a variant of DeepForge which uses Caffe as for training and testing the models.
 
+## Recommended Environment
+- node v4.x.x
+- npm v2.x.x
+- mongodb v3.2.3
+- git-lfs (just for initial clone)
+
 ## Quick Setup
-After cloning the repo, run
+First, install [git-lfs](https://git-lfs.github.com/) and clone the repo. After cloning the repo, run
 
 ```
 npm install && npm start
