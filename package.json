@@ -28,7 +28,7 @@
     "webgme-chflayout": "dfst/webgme-chflayout",
     "webgme-easydag": "dfst/webgme-easydag",
     "webgme-fab": "dfst/webgme-fab",
-    "webgme-simple-nodes": "brollb/webgme-simple-nodes"
+    "webgme-simple-nodes": "^1.0.0"
   },
   "devDependencies": {
     "chai": "=3.0.0",
