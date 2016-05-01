@@ -21,7 +21,7 @@
             },
             {
                 "id": "FloatingActionButton",
-                "panel": "FloatingActionButton/FloatingActionButton",
+                "panel": "ForgeActionButton/ForgeActionButton",
                 "container": "float",
                 "DEBUG_ONLY": false
             }
