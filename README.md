@@ -1,6 +1,5 @@
 [![Release State](https://img.shields.io/badge/state-pre--alpha-red.svg)](https://img.shields.io/badge/state-pre--alpha-red.svg)
 [![Build Status](https://travis-ci.org/dfst/deepforge-caffe.svg?branch=master)](https://travis-ci.org/dfst/deepforge-caffe)
-[![Join the chat at https://gitter.im/dfst/deepforge-caffe](https://badges.gitter.im/dfst/deepforge-caffe.svg)](https://gitter.im/dfst/deepforge-caffe?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/dfst/deepforge-caffe.png?label=ready&title=Ready)](https://waffle.io/dfst/deepforge-caffe)
 
 **Deprecated**: DeepForge-Caffe is no longer maintained. Please check out [DeepForge](https://github.com/deepforge-dev/deepforge), a significantly more sophisticated and robust development environment environment for deep learning.
